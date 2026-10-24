@@ -1,0 +1,3 @@
+# enumerate消滅
+
+極めて例外的な動作を行っていたenumerateコマンドは削除されました。getcodeやloopコマンドを使ってください。

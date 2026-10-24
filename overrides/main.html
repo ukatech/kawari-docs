@@ -1,0 +1,34 @@
+{#- OGP / Twitter カード。ページごとの設定は mkdocs.yml の extra.ogp に、ページの URL（page.url）をキーにして書く -#}
+{% extends "base.html" %}
+
+{% block extrahead %}
+  {%- set is_home = page.url == "" -%}
+  {%- set all_ogp = config.extra.ogp if config.extra.ogp is defined else {} -%}
+  {%- set ogp = all_ogp[page.url] if page.url in all_ogp else {} -%}
+  {%- if is_home or not page.title -%}
+    {%- set og_title = config.site_name -%}
+  {%- else -%}
+    {%- set og_title = page.title ~ " - " ~ config.site_name -%}
+  {%- endif -%}
+  {%- set og_title = ogp.title if ogp.title is defined else og_title -%}
+  {%- set og_description = ogp.description if ogp.description is defined else config.site_description -%}
+  <meta property="og:type" content="{{ 'website' if is_home else 'article' }}">
+  <meta property="og:site_name" content="{{ config.site_name }}">
+  <meta property="og:title" content="{{ og_title }}">
+  <meta property="og:description" content="{{ og_description }}">
+  {%- if page.canonical_url %}
+  <meta property="og:url" content="{{ page.canonical_url }}">
+  {%- endif %}
+  <meta property="og:locale" content="ja_JP">
+  {%- if ogp.image is defined %}
+  <meta property="og:image" content="{{ config.site_url ~ ogp.image }}">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:image" content="{{ config.site_url ~ ogp.image }}">
+  {%- else %}
+  <meta name="twitter:card" content="summary">
+  {%- endif %}
+  <meta name="twitter:title" content="{{ og_title }}">
+  <meta name="twitter:description" content="{{ og_description }}">
+{% endblock %}

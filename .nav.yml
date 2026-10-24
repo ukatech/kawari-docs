@@ -1,0 +1,11 @@
+nav:
+  - index.md
+  - はじめに: startup
+  - 文法: grammar
+  - SHIORI/SAORI インターフェース: shiori
+  - KIS コマンド: kis
+  - 幸水（kosui）: kosui
+  - ヒント集: tips
+  - 移行ガイド: migration
+  - 仕様書: spec
+  - その他: other

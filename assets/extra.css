@@ -1,0 +1,17 @@
+/* ロゴは白地の丸いマーク。黒いヘッダに四角い白地が浮かないよう、丸く切り抜く */
+.md-logo img {
+  border-radius: 50%;
+}
+
+/* KIS や辞書の記法（全角・記号を含むコードブロック）を読みやすくする */
+.md-typeset code {
+  word-break: normal;
+}
+
+/* 表が広いページで横スクロールできるようにする */
+.md-typeset__table {
+  min-width: 100%;
+}
+.md-typeset table:not([class]) {
+  display: table;
+}

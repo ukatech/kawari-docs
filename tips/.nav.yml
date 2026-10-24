@@ -1,0 +1,10 @@
+nav:
+  - index.md
+  - pseudo-kawari-ini.md
+  - story-talk.md
+  - non-overlap-call.md
+  - sequential-call.md
+  - communicate-helpers.md
+  - char-type.md
+  - notify-handling.md
+  - debug-support.md
