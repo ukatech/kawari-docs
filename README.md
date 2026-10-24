@@ -8,6 +8,6 @@
 
 ## ライセンス
 
-このリポジトリの内容は、華和梨本体（[kawari](https://github.com/ukatech/kawari)）と同じく、オリジナルのライセンスと著作権表示を引き継いでいます（[LICENSE](LICENSE) を参照）。
+このリポジトリの内容は、華和梨本体（[kawari](https://github.com/ukatech/kawari)）と同じ [BSD 2-Clause License](LICENSE) です。
 
-Copyright (C) 2001-2015 KAWARI Development Team
+Copyright (c) 2001-2015, KAWARI Development Team
