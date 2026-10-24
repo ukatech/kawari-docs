@@ -32,7 +32,7 @@
 
 ## GitHub Pages
 
-`main` に push すると GitHub Actions（`.github/workflows/pages.yml`）が Zensical（Material for MkDocs の後継。Material テーマ互換）でビルドし、https://ukatech.github.io/kawari-docs/ に公開する。ビルドは `zensical build --strict` で、リンク切れ・アンカー切れがあると失敗する。
+`main` に push すると GitHub Actions（`.github/workflows/pages.yml`）が Zensical（Material for MkDocs の後継。Material テーマ互換）でビルドし、http://ukatech.shillest.net/kawari-docs/（リポジトリにカスタムドメインが設定されている。`ukatech.github.io/kawari-docs/` はここへ転送される）に公開する。ビルドは `zensical build --strict` で、リンク切れ・アンカー切れがあると失敗する。
 
 - 原稿はリポジトリ直下にあるため、`scripts/prepare_site.py` が `_site_src/` に写してからビルドする。その際 `INDEX.md` は `index.md`（トップページ）になり、`INDEX.md` へのリンクも書き換えられる
 - コマンド（`kis/`）は、サイトでは `kis/index.md` の分類ごとの 1 ページ（`kis/dictionary/`、`kis/strings/` など）にまとめて出す。`index.md` 自体は手書きのまま 1 ページで出す。`grammar/` `migration/` `spec/` も、それぞれ 1 ページ（`grammar/` など）にまとめる。原稿は 1 ファイル 1 ページのまま書き、リンクも `../kis/set.md` や `05-expressions.md#演算式` と従来どおり書く（`prepare_site.py` がまとめたページの見出しへのリンクに書き換える。リンク先の見出しが無いとエラーで止まる）
