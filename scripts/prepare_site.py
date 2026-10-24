@@ -11,6 +11,7 @@ r"""GitHub Pages 用に原稿を _site_src/ へ写す。
 - grammar/・migration/・spec/ の章ごとのファイルを、それぞれ 1 ページ（<ディレクトリ>/index.md）にまとめる
 - まとめた元ページ（kis/NAME.md、grammar/NN-xxx.md など）へのリンクは、まとめたページの
   見出しへのリンクに書き換える。元ページの URL には移動先へ飛ばす HTML を置く（外部からのリンクを切らないため）
+- 生の Markdown 原稿を _raw/ に写す（ビルド後に _site へ重ねる。llms.txt から INDEX.md などを辿れるようにする）
 原稿そのものは書き換えない。
 """
 import json
@@ -357,6 +358,29 @@ def build_merged(d, chapters):
         write_redirect(f'{d}/{name}', *MERGED[f'{d}/{name}'])
 
 
+RAW = os.path.join(ROOT, '_raw')
+RAW_SKIP_DIRS = {'scripts', 'overrides', 'assets', 'node_modules'}
+RAW_SKIP_FILES = {'README.md', 'CLAUDE.md'}
+RAW_EXTRA = []   # .md 以外で、原稿から参照されていて一緒に置くファイル
+
+
+def build_raw():
+    """生の Markdown 原稿を、リポジトリと同じ相対パスで _raw/ に写す。
+    zensical は docs_dir の .md をページにしてしまうので _site_src/ には置けない。ビルド後に _site へ重ねる"""
+    if os.path.exists(RAW):
+        shutil.rmtree(RAW)
+    rels = list(RAW_EXTRA)
+    for base, dirs, names in os.walk(ROOT):
+        dirs[:] = [d for d in dirs if not d.startswith(('.', '_')) and d not in RAW_SKIP_DIRS]
+        for name in names:
+            if name.endswith('.md') and not (base == ROOT and name in RAW_SKIP_FILES):
+                rels.append(os.path.relpath(os.path.join(base, name), ROOT))
+    for rel in rels:
+        dst = os.path.join(RAW, rel)
+        os.makedirs(os.path.dirname(dst), exist_ok=True)
+        shutil.copy(os.path.join(ROOT, rel), dst)
+
+
 def main():
     if os.path.exists(OUT):
         shutil.rmtree(OUT)
@@ -376,6 +400,8 @@ def main():
     write('index.md', render('INDEX.md', read('INDEX.md'), 'index.md'))
     shutil.copy(os.path.join(ROOT, '.nav.yml'), os.path.join(OUT, '.nav.yml'))
     shutil.copytree(os.path.join(ROOT, 'assets'), os.path.join(OUT, 'assets'))
+    shutil.copy(os.path.join(ROOT, 'llms.txt'), os.path.join(OUT, 'llms.txt'))
+    build_raw()
     for d in DIRS:
         for name in sorted(os.listdir(os.path.join(ROOT, d))):
             if name.endswith('.md'):

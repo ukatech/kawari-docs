@@ -37,6 +37,8 @@
 - 原稿はリポジトリ直下にあるため、`scripts/prepare_site.py` が `_site_src/` に写してからビルドする。その際 `INDEX.md` は `index.md`（トップページ）になり、`INDEX.md` へのリンクも書き換えられる
 - コマンド（`kis/`）は、サイトでは `kis/index.md` の分類ごとの 1 ページ（`kis/dictionary/`、`kis/strings/` など）にまとめて出す。`index.md` 自体は手書きのまま 1 ページで出す。`grammar/` `migration/` `spec/` も、それぞれ 1 ページ（`grammar/` など）にまとめる。原稿は 1 ファイル 1 ページのまま書き、リンクも `../kis/set.md` や `05-expressions.md#演算式` と従来どおり書く（`prepare_site.py` がまとめたページの見出しへのリンクに書き換える。リンク先の見出しが無いとエラーで止まる）
 - まとめた元ページの URL（`kis/set/` など）には、移動先へ飛ばすだけの HTML を `prepare_site.py` が置く。まとめたページでは、コマンド名（`dictcommon` と `regex` は、その節）が H2、コマンドの中の節（書式・戻り値など）が H4 で、見出しの id は `set`（ファイル名）、`set-書式` の形になる。右の目次は `toc_depth: 3` によりコマンド名だけになる
+- `llms.txt`（AI エージェント向けの探し方の案内。`INDEX.md` と各ディレクトリの入口だけを書く）はサイトのルートに置かれる。ページごとの一覧は載せないので、ページを足しても直さなくてよい。ディレクトリを足したときは「構成」に 1 行足す
+- 生の Markdown 原稿（`README.md` と `CLAUDE.md` 以外の `.md`）は、リポジトリと同じパスでサイトにも置かれる。`scripts/prepare_site.py` が `_raw/` に写し、workflow がビルド後に `_site` へ重ねる（zensical は `.md` をページにしてしまうので、`_site_src/` には置けない）。`llms.txt` や `INDEX.md` の相対リンクは、このおかげでサイト上でも辿れる
 - 設定は `mkdocs.yml` をそのまま読ませている。左メニューの章立ては `.nav.yml`（mkdocs-awesome-nav）、各ページの名前は H1 から決まる
 - ヘッダの色は `mkdocs.yml` の `theme.palette` の `primary`（現在は black）で決まる。ロゴと favicon は `assets/logo.png`（`../kawari/document/images/logo.png` と同じもの）
 - GitHub では表示できても MkDocs（Python-Markdown）では崩れる書き方がある。段落の直後に空行なしで続くリストや表は `prepare_site.py` が空行を補うので、原稿は GitHub 向けのままでよい。表の中のコードスパンの `|` は GitHub 向けに `\|` と書く（`prepare_site.py` がサイト用に `|` へ戻す）。2 スペース字下げの入れ子リストは mdx_truly_sane_lists で扱える

@@ -10,6 +10,8 @@
 
 間違いやわかりにくいところを見つけたら、[整備班BTS](https://bts.shillest.net/)（報告フォーム）で教えてください。GitHub に慣れている方は、[Issues](https://github.com/ukatech/kawari-docs/issues) や Pull Request でも構いません。
 
+> AI エージェント向けに、探し方の案内 [llms.txt](https://ukatech.shillest.net/kawari-docs/llms.txt) を用意しています。各ページの Markdown 原稿は、リポジトリと同じパスの `.md`（例: `https://ukatech.shillest.net/kawari-docs/startup/getting-started.md`）で取得できます。
+
 ## ダウンロード・ソース
 
 - [華和梨のリポジトリ（kawari）](https://github.com/ukatech/kawari)

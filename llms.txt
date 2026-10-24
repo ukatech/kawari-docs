@@ -1,0 +1,27 @@
+# 華和梨マニュアル
+
+> 伺か（ukagaka）の SHIORI「華和梨（KAWARI）」のマニュアル。辞書の書き方、インラインスクリプト（KIS）のコマンド、SHIORI/SAORI インターフェース、旧版からの移行ガイドを、1 ページ 1 ファイルの Markdown で収めている。
+
+## 探し方
+
+- 最初に [INDEX.md](INDEX.md) を開く。「はじめての方へ」「調べたいとき」と、分野ごとのページ表から各ページへ辿れる。
+- KIS のコマンドは [kis/index.md](kis/index.md) が分類ごとの一覧。1 コマンド 1 ファイルで、ファイル名はコマンド名（例: `kis/set.md`）。
+- SHIORI/SAORI のインターフェースは [shiori/index.md](shiori/index.md)、幸水（kosui）は [kosui/index.md](kosui/index.md)、ヒント集は [tips/index.md](tips/index.md) が一覧。
+
+## 構成
+
+- [INDEX.md](INDEX.md): 全体の目次
+- `startup/`: 華和梨とは、導入ガイド
+- `grammar/`: 辞書の書き方（`00`〜`06` の章立て）
+- `shiori/`: SHIORI/SAORI インターフェース
+- `kis/`: KIS コマンドのリファレンス
+- `kosui/`: 幸水（動作確認・デバッグ用ツール）
+- `tips/`: ヒント集
+- `migration/`: 移行ガイド（華和梨 8 から Phase 9 へ、Phase 7 以前から）
+- `spec/`: 仕様書（言語仕様、文法、EBNF など。互換系・KIS 開発者向け）
+- `other/`: エラーメッセージ一覧、ライセンス、ソース概略、更新履歴など
+
+## 書式
+
+- コマンドページは、書式 / 戻り値 / 解説 / 使用例の順。
+- 対応バージョンは `Phase 9.0.0以降` のように書いてある。
