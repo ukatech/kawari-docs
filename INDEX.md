@@ -4,6 +4,8 @@
 
 *To hack, or not to be... That is the Program!!*
 
+<p align="center"><img src="assets/logo.png" width="300" height="300" alt='MULTI PURPOSE SHIORI SYSTEM "KAWARI"'></p>
+
 > 「ですくとっぷ戦線ニ異常アリ」 — *"SOMETHING IS WRONG WITH THE DESKTOP FRONT."* （[ストーリー](other/story.md)）
 
 間違いやわかりにくいところを見つけたら、[整備班BTS](https://bts.shillest.net/)（報告フォーム）で教えてください。GitHub に慣れている方は、[Issues](https://github.com/ukatech/kawari-docs/issues) や Pull Request でも構いません。
