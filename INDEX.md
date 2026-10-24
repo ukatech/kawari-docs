@@ -179,8 +179,4 @@
 
 ---
 
-## 関連リンク
-
-- [華和梨公式配布サイト（GitHub）](https://ukatech.github.io/kawari/)
-
 華和梨開発チーム: NAKAUE.T (Meister)、偽Meister (夢乃)、さとー、酔狂、さくらのにえ

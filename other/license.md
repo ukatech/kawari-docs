@@ -36,7 +36,7 @@ ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
 POSSIBILITY OF SUCH DAMAGE.
 ```
 
-[氷鉋悦子さんによる日本語訳](http://openlab.etl.go.jp/freesoft/BSD-j.htm)(参考)をもとにした日本語訳は以下です。
+氷鉋悦子さんによる日本語訳(参考)をもとにした日本語訳は以下です。
 
 > Copyright (C) 2001-2015 KAWARI Development Team
 >
