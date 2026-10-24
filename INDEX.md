@@ -182,7 +182,5 @@
 ## 関連リンク
 
 - [華和梨公式配布サイト（GitHub）](https://ukatech.github.io/kawari/)
-- [「あれ以外の何か以外の何か」掲示板](http://hpcgi1.nifty.com/creative-s/meister/wforum.cgi)
-- [華和梨を使い倒す？](http://homepage1.nifty.com/creative-s/kawarisp/)
 
 華和梨開発チーム: NAKAUE.T (Meister)、偽Meister (夢乃)、さとー、酔狂、さくらのにえ
