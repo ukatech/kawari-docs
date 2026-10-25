@@ -14,7 +14,7 @@ KISコマンド追加の基本手順は以下の通りです。
 > - `TKisFunction_base`クラスをpublicに継承し、コマンドのクラスを作る
 > - `INLINE_SCRIPT_REGIST`()マクロを使い、コマンドのクラスを登録
 > - メンバ関数Initに簡単な解説を書く
-> - メンバ関数string Function(vector&lt;string\>&)に処理を書く
+> - メンバ関数`string Function(vector<string>&)`に処理を書く
 >
 > 3)ヘッダファイル名を`kis_config.h`に追加する
 >

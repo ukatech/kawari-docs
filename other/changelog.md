@@ -14,7 +14,7 @@
           in ${OnBoot} at file(line)
   ```
 
-  - the codes are K-E&lt;number\> / K-W&lt;number\>; the numbers are listed in kawari\_log.h (enum DiagCode) and are never changed or reused
+  - the codes are `K-E<number>` / `K-W<number>`; the numbers are listed in kawari\_log.h (enum DiagCode) and are never changed or reused
   - the compile errors used to be `"file line: error: message"` (the format changed; the text of the messages is the same). The location of a runtime diagnostic is the dictionary file and the line of the word being run, found by (entry, word): a word that is shared by several entries has one location per entry. Words made at run time (adddict, set) have no location, and the location of a word that was freed is forgotten (IDs are reused). The statements of `"=kis"` zones have their own lines, and a `function` / `lambda` made there is located at its statement
   - the call chain (up to 8 frames) is printed under the diagnostic: `"in ${entry}"` for a word, `"in $(name)"` for a user function, `"in <kis zone>"` for the =kis zone being loaded. `decl` warnings print only the innermost frame
   - nothing is printed or recorded for a level that `loglevel` does not enable (quiet is still the default), and the meaning of a dictionary is not changed: an undefined entry is still empty. Running cost: a push and a pop of a small frame per word run, not measurable in the hot path
@@ -31,16 +31,16 @@
   - exit code: 0 = nothing, 1 = warnings only, 2 = errors (--werror makes warnings errors), 3 = could not run (the rcfile cannot be read)
   - the output is only diagnostics (a line `"check: N error(s), M warning(s)"` at the end); the `echo` of KIS and `loglevel` / `logfile` do not change it. json prints one JSON document in UTF-8 whatever the console is
   - --eval runs a script after the load (as typed in kosui), so the diagnostics of the events can be found; it samples random choices, use --seed to repeat. --decl also reports reads of empty entries (K-W0003)
-  - the sandbox (engine-\>SetSandbox) stops everything that reaches out of the dictionary: files are not written (save, textsave, logfile... succeed without writing), SAORI modules are not loaded (a call to a registered or internal\_\* module answers Result: 0), and the baseware is not reached (Direct SSTP). It is for static checking only: `"=kis"` is really run, so a loop that never ends hangs --check
+  - the sandbox (engine->SetSandbox) stops everything that reaches out of the dictionary: files are not written (save, textsave, logfile... succeed without writing), SAORI modules are not loaded (a call to a registered or internal\_\* module answers Result: 0), and the baseware is not reached (Direct SSTP). It is for static checking only: `"=kis"` is really run, so a loop that never ends hangs --check
 - add the static check (lint) to `"kosui --check"`: after the load (and before --eval) it walks every word of the dictionary and every `"=kis"` zone, and warns about what is wrong without running it. `--no-lint` turns it off
   - K-W2001: a reference to an entry that is defined nowhere (${x}, ${a + x}, $x\[0\]), which is silently empty at run time
-  - K-W2002: a command that is neither built in, nor defined by `function` (or as System.Function.&lt;name\>), nor a forced built-in call (`.name`)
+  - K-W2002: a command that is neither built in, nor defined by `function` (or as `System.Function.<name>`), nor a forced built-in call (`.name`)
   - K-W2003: a regex\_\* command with an unquoted ( ) in an argument. The parentheses of a bare word are the block syntax of Kawari and are removed, so the regular expression never sees them: regex\_match (a) x matches `a` without a group. Quote the pattern: regex\_match `"(a)"` x. This one is found by the compiler (the tree keeps no trace of the parentheses) while it loads the dictionary, only when checking
   - K-W2004: regex\_replace / regex\_replace\_first with an unquoted ${N} in the replacement string. It is expanded as a history reference before the command runs, so the back reference never reaches the regex
   - a comment line `"# lint:disable-next-line=K-W2001, K-W2003"` suppresses the listed lint warnings (K-W2xxx) on the next line of the file. Only a whole-line `"#"` is a comment in Kawari, so there is no end-of-line form. A warning in a multi-line word is located at the first line of the word, so the comment goes above the entry
   - to keep false positives down, these names count as defined: entries that exist after the load, any literal given as an argument of a statement (set / adddict / foreach variables...) or written in a `"$(...)"` inside a string, a name whose head is a literal and whose tail is built at run time (launch\_a\_${n}), System.\* and @local. Names built by ${...} are not checked at all. These are warnings: --werror makes them errors
   - the entries of the warnings are sorted by file and line. A multi-line word is located at its first line
-  - the compiled `"=kis"` zones are kept (engine-\>SetKeepZones) until the check is done; they are freed right after the run as before otherwise
+  - the compiled `"=kis"` zones are kept (engine->SetKeepZones) until the check is done; they are freed right after the run as before otherwise
   - TKVMCode\_base::GetChildren() lists the children of a code node, for the walk. It is not used when running
 - add the check suite to test/run.ps1 and test/run\_posix.py (test/check/\*)
 
@@ -83,7 +83,7 @@
 
 ## Phase 9.1.0 (Core 4.1.0) (2026/10/19)
 
-- add `lambda`: defines an anonymous function and returns its name (System.Lambda.&lt;n\>, never the same as a defined function). The body is written like that of `function`, and the returned name is used as a command name ($(${f} args)) or passed to another function. It is not a closure: the local entries (@arg etc.) of the place where it was defined are not carried. Remove it with `rmfunc`
+- add `lambda`: defines an anonymous function and returns its name (`System.Lambda.<n>`, never the same as a defined function). The body is written like that of `function`, and the returned name is used as a command name ($(${f} args)) or passed to another function. It is not a closure: the local entries (@arg etc.) of the place where it was defined are not carried. Remove it with `rmfunc`
 - updated uka\_regexp (build/src/uka\_regexp):
   - (\*UCP) at the head of a pattern makes \d \w \s \b and the POSIX classes use the Unicode properties (the default is still ASCII only)
   - where wchar\_t is 16 bit (Windows), a surrogate pair is one character in a pattern (. and \[^a\] match a whole emoji, and a match never starts or ends in the middle of a pair). The positions given to KIS are still counted in wchar\_t
@@ -94,7 +94,7 @@
 ## Phase 9.0.0 beta4 (Core 4.0.0) (2026/10/18)
 
 - add the regular expression commands `regex_match`, `regex_find`, `regex_findall`, `regex_count`, `regex_replace`, `regex_replace_first`, `regex_erase`, `regex_erase_first`, `regex_split` and `regex_escape`, on the engine uka\_regexp (build/src/uka\_regexp, a git submodule; clone with --recursive or run `"git submodule update --init"`). The syntax is close to PCRE2; \d \w \s \b match ASCII only. The matches, the groups and the pieces are stored to the entry given as an argument
-- a subroutine call in a pattern, (?&name) or \g&lt;name\>, whose name the pattern does not define is replaced with the expansion of the entry ${name}. A pattern with parentheses must be quoted (`...`) in the dictionary and the script
+- a subroutine call in a pattern, (?&name) or `\g<name>`, whose name the pattern does not define is replaced with the expansion of the entry ${name}. A pattern with parentheses must be quoted (`...`) in the dictionary and the script
 - makedepend.rb resolves #include `foo.h` of the same folder (needed by uka\_regexp) and is converted from CP932 to EUC-JP
 
 ## Phase 9.0.0 beta3 (Core 4.0.0) (2026/10/18)
@@ -153,7 +153,7 @@
 
 ## Phase 8.2.5 (2008/01/26)
 
-- fixed the midpoint(0xa5) problem in Japanese character code (gcc optimize option: -Os =\> -O1. enbuged by UPX!)
+- fixed the midpoint(0xa5) problem in Japanese character code (gcc optimize option: -Os => -O1. enbuged by UPX!)
 - fixed `isexist` command (do not work in root directory)
 - add `quiet`mode option for kosui (--quiet). After the initialization file is read, kosui ends at once when quiet mode.
 - fixed compile error for ninix-aya environment (Thanks: paulliu)
@@ -173,7 +173,7 @@
 ## Phase 8.2.3RC (closed) (2005/06/21)
 
 - fixed auto type judgement feature(number or character) in expression
-- release compiler: MinGW 2.0.0-3 -\> MinGW 4.1.0(gcc.3.4.2)
+- release compiler: MinGW 2.0.0-3 -> MinGW 4.1.0(gcc.3.4.2)
 - built shiori.dll binary by 'gcc -shared' instead of 'dllwrap'
 - supported gcc3.x(warning messages)
 - fixed `split` command (NULL pointer violation!)

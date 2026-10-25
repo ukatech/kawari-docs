@@ -19,7 +19,7 @@ kosui --check [--format text|json] [--werror] [--decl] [--no-lint] [--eval ス�
 | --norc | kawarirc.kisを読み込まない。 |
 | --quiet | quietモードで、初期化ファイルを読み込んだ後に直ちに終了する。 |
 | --check | 検査モードで、辞書を安全モードで読み込み、出たエラーと警告を報告して終了する。[検査モード (--check)](check-mode.md) 参照。 |
-| &lt;rcfile\> | ファイル名を指定することにより、 kawarirc.kisの代わりにそのファイルを初期化ファイルとして読み込む。 |
+| `<rcfile>` | ファイル名を指定することにより、 kawarirc.kisの代わりにそのファイルを初期化ファイルとして読み込む。 |
 
 ## インタープリタモード
 
