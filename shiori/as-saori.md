@@ -43,7 +43,8 @@ System.Callback.OnSaoriExecute : $(
         SAORI処理1;
     ) else if $[ ${System.Request.Argument0} == "処理2" ] $(
         SAORI処理2;
-  );
+    );
+  )
 
 # SAORI処理をわざわざ関数にする必然性はないのだが…
 # 新機軸に見慣れて貰うために、あえて関数で記述した。

@@ -10,11 +10,11 @@
 # GET SHIORI/3.0への応答
 # イベント、リソース文字列、コミュニケート、etc…
 # イベントは「event.<イベント名>」、
-# リソースは「Resourece.<リソース名>」というエントリを呼ぶ
+# リソースは「resource.<リソース名>」というエントリを呼ぶ
 System.Callback.OnGET: $(
     if $[ $(match_at ${System.Request.ID} On) ]
         ${event.${System.Request.ID}}
-    else $(
+    else
         ${resource.${System.Request.ID}}
   )
 ```

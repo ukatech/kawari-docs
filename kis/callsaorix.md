@@ -21,7 +21,7 @@ SAORI呼び出し結果(Result)
 ```
 # tmizu氏作のwmove.dllを使い、キャラクタの立ち位置を取得する
 =kis
-fuction getposition $(
+function getposition $(
   # 引数1 : 0=Sakura、1=Kero
   # 引数2 : 戻り値返却用エントリ名
   if $[ $@arg[1] == 0 ] $(
