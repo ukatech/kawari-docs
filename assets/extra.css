@@ -16,6 +16,89 @@
   display: table;
 }
 
+/* ===== 束ねたページの見た目（ukadoc-spec の assets/extra.css から移した部品） =====
+   項目名の帯（.bundle-item）・トップの節の帯（.top-section）の目印は scripts/prepare_site.py が付ける。
+   色は --ukd-* に集める。--ukd-* は body に付く [data-md-color-scheme] に置く（:root に置くと、
+   暗い表示の主色を読めない） */
+
+[data-md-color-scheme="default"] {
+  --ukd-band: var(--md-primary-fg-color);
+  --ukd-band-fg: var(--md-primary-bg-color);
+  --ukd-band-fg-light: var(--md-primary-bg-color--light);
+  --ukd-box-head: var(--md-primary-fg-color);
+  --ukd-box-edge: var(--md-primary-fg-color);
+  --ukd-box-body: color-mix(in srgb, var(--md-default-fg-color) 6%, var(--md-default-bg-color));
+}
+[data-md-color-scheme="slate"] {
+  --ukd-band: color-mix(in srgb, var(--md-default-fg-color) 28%, var(--md-default-bg-color));
+  --ukd-band-fg: var(--md-default-fg-color);
+  --ukd-band-fg-light: var(--md-default-fg-color--light);
+  --ukd-box-head: var(--ukd-band);
+  --ukd-box-edge: var(--md-default-fg-color--light);
+  --ukd-box-body: color-mix(in srgb, var(--md-default-fg-color) 8%, var(--md-default-bg-color));
+}
+
+/* 項目名の帯 */
+.md-typeset .bundle-item {
+  margin: .5em 0 .3em;
+  padding: .3em .6em;
+  border-left: .3rem solid var(--ukd-band);
+  border-bottom: .05rem solid var(--md-default-fg-color--lighter);
+  background: var(--md-default-fg-color--lightest);
+}
+.md-typeset .bundle-item code {
+  padding: 0;
+  background: transparent;
+}
+.md-typeset:has(.bundle-item) hr {
+  margin: .5em 0;
+}
+
+/* トップの節の帯 */
+.md-typeset .top-section {
+  padding: .3em .6em;
+  border-radius: .1rem;
+  background: var(--ukd-band);
+  color: var(--ukd-band-fg);
+  font-weight: 700;
+}
+
+/* 書式・使用例などのコードブロックの箱（見出しの直後のコードブロックを、見出しと続けて 1 つの箱にする） */
+.md-typeset:has(.bundle-item) h4:has(+ .highlight) {
+  margin: 1.4em 0 0;
+  padding: .3em .8em;
+  border-radius: .2rem .2rem 0 0;
+  background: var(--ukd-box-head);
+  color: var(--ukd-band-fg);
+  font-size: .75rem;
+}
+.md-typeset:has(.bundle-item) :is(h4, h4 + .highlight, h4 + .highlight + .highlight, h4 + .highlight + .highlight + .highlight) + .highlight {
+  margin: 0 0 1em;
+  border-left: .35rem solid var(--ukd-box-edge);
+  background: var(--ukd-box-body);
+}
+.md-typeset:has(.bundle-item) :is(h4, h4 + .highlight, h4 + .highlight + .highlight, h4 + .highlight + .highlight + .highlight) + .highlight :is(pre, code) {
+  margin: 0;
+  background: transparent;
+}
+.md-typeset:has(.bundle-item) :is(h4 + .highlight, h4 + .highlight + .highlight, h4 + .highlight + .highlight + .highlight) + .highlight {
+  border-top: .05rem dashed var(--ukd-box-edge);
+}
+.md-typeset:has(.bundle-item) :is(h4, h4 + .highlight, h4 + .highlight + .highlight) + .highlight:has(+ .highlight) {
+  margin-bottom: 0;
+}
+
+/* 濃い帯の中の ¶ と検索の強調 */
+.md-typeset .top-section .headerlink,
+.md-typeset:has(.bundle-item) h4:has(+ .highlight) .headerlink {
+  color: var(--ukd-band-fg-light);
+}
+.md-typeset .top-section mark,
+.md-typeset:has(.bundle-item) h4:has(+ .highlight) mark {
+  background-color: var(--ukd-band-fg);
+  color: var(--ukd-band);
+}
+
 /* ヘッダの翻訳ボタン（assets/translate.js）。Translator API が無いブラウザでは、ボタン自体を出さない */
 .ukadoc-translate {
   position: relative;

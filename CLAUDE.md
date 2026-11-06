@@ -47,6 +47,7 @@
 - Zensical は 0.0.x の版を固定している（`requirements.txt`）。Material for MkDocs は 2026-11-05 にサポート終了のため移行した（MkDocs 2.0 はプラグインや Material テーマと互換性が無い）
 - Zensical のテンプレートは MiniJinja で、`page.file` や `page.is_homepage` が無い。`overrides/main.html` はページの URL（`page.url`）で判定し、ページ別の OGP は `extra.ogp` に URL をキーにして書く（今は設定なし）
 - 見た目は `theme.variant: classic` で従来のまま。Zensical の既定は新デザインの modern
+- ukadoc-spec の見た目の部品を、華和梨の黒（モノクロ）の配色に合わせて移してある（`assets/extra.css` の「束ねたページの見た目」）。`scripts/prepare_site.py` が、目印の class を原稿の写しに付ける。分類ごとにまとめたページのコマンド名（H2。共通事項などの解説だけのページは除く）に `bundle-item`（項目名の帯）、トップページの節（H2）に `top-section`（帯）。`bundle-item` のあるページでは、書式・使用例などの見出し（H4）とその直後のコードブロックを 1 つの箱にする。色は `--ukd-*`（`assets/extra.css`）に集める。主色は黒なので、暗い表示ではライト側の主色（黒）が地に沈まないよう、`--ukd-*` を灰色から導いている。
 - ヘッダに翻訳ボタンがある（`assets/translate.js`。`mkdocs.yml` の `extra_javascript`、見た目は `assets/extra.css` の `.ukadoc-translate`）。ブラウザ組み込みの Translator API（Chrome 138 以降のデスクトップ版など）で、本文と左メニューを日本語から英語・中国語（繁体 `zh-Hant`・簡体 `zh`）へ機械翻訳する。API が無いブラウザではボタンを出さない。訳すのは日本語を含むテキストノードだけで、`code` `pre` `kbd` と `translate="no"` の中は訳さない。訳したくない語は原稿で `<span translate="no">…</span>` と囲める。読める程度の品質でよいとしている。JavaScript を使うのはこのボタンだけ
 
 手元で確認するとき（`_site_src/` と `_site/` は `.gitignore` 済み）:

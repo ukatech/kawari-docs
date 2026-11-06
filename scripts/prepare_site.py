@@ -12,6 +12,8 @@ r"""GitHub Pages 用に原稿を _site_src/ へ写す。
 - まとめた元ページ（kis/NAME.md、grammar/NN-xxx.md など）へのリンクは、まとめたページの
   見出しへのリンクに書き換える。元ページの URL には移動先へ飛ばす HTML を置く（外部からのリンクを切らないため）
 - 生の Markdown 原稿を _raw/ に写す（ビルド後に _site へ重ねる。llms.txt から INDEX.md などを辿れるようにする）
+- 見た目のための目印（attr_list の class）を、原稿の写しに付ける。まとめたページのコマンドの名前（H2）に
+  bundle-item、トップページの節（H2）に top-section（見た目は assets/extra.css）
 原稿そのものは書き換えない。
 """
 import json
@@ -228,6 +230,23 @@ def render(src, text, dst, depth_of=None):
     return rewrite_links(fix_markdown(text), src, dst)
 
 
+def mark_item(text):
+    """まとめたページの項目の名前（先頭の H2。{#id} を持つ）に、役の class（bundle-item）を付ける"""
+    return re.sub(r'^(## .+ \{#[^}\s]+)\}', r'\1 .bundle-item}', text, count=1, flags=re.M)
+
+
+def mark_top(text):
+    """トップページの節（H2）の見出しに、役の class（top-section）を付ける"""
+    lines = text.split('\n')
+    in_fence = False
+    for i, line in enumerate(lines):
+        if FENCE.match(line):
+            in_fence = not in_fence
+        elif not in_fence and re.match(r'^## +\S', line):
+            lines[i] = f'{line.rstrip()} {{: .top-section }}'
+    return '\n'.join(lines)
+
+
 def write_redirect(old, new, frag=''):
     """ページ old（.md）の URL に、ページ new（.md）の見出し frag へ転送する HTML を置く"""
     old_dir, new_dir = old[:-len('.md')], new[:-len('.md')]
@@ -333,7 +352,8 @@ def build_groups(d, groups):
             else:
                 # ページ名は H2。その下の節（書式・引数など）は H4 にして、右の目次をページ名だけにする
                 depth_of = lambda level: 2 if level == 1 else level + 2
-            parts.append(render(src, text, page, depth_of).strip('\n'))
+            item = render(src, text, page, depth_of).strip('\n')
+            parts.append(item if name in lead else mark_item(item))
         write(page, join_items(parts[0], parts[1:]) + '\n')
         for name in lead + names:
             write_redirect(f'{d}/{name}.md', *MERGED[f'{d}/{name}.md'])
@@ -397,7 +417,7 @@ def main():
         write(f'{d}/index.md', render(f'{d}/index.md', read(f'{d}/index.md'), f'{d}/index.md'))
     for d, chapters in merged.items():
         build_merged(d, chapters)
-    write('index.md', render('INDEX.md', read('INDEX.md'), 'index.md'))
+    write('index.md', mark_top(render('INDEX.md', read('INDEX.md'), 'index.md')))
     shutil.copy(os.path.join(ROOT, '.nav.yml'), os.path.join(OUT, '.nav.yml'))
     shutil.copytree(os.path.join(ROOT, 'assets'), os.path.join(OUT, 'assets'))
     shutil.copy(os.path.join(ROOT, 'llms.txt'), os.path.join(OUT, 'llms.txt'))
