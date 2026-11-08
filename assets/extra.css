@@ -40,7 +40,7 @@
 
 /* 項目名の帯 */
 .md-typeset .bundle-item {
-  margin: .5em 0 .3em;
+  margin: 2.2em 0 .6em;
   padding: .3em .6em;
   border-left: .3rem solid var(--ukd-band);
   border-bottom: .05rem solid var(--md-default-fg-color--lighter);
@@ -97,6 +97,78 @@
 .md-typeset:has(.bundle-item) h4:has(+ .highlight) mark {
   background-color: var(--ukd-band-fg);
   color: var(--ukd-band);
+}
+
+/* ===== 紙面・ページ題・左の目次（ukadoc-spec の assets/extra.css から移した部品） =====
+   地を主色で薄く染め、本文を紙のパネルに載せる。色は --ukd-* に集める（body に付く [data-md-color-scheme] に置く。
+   :root に置くと、暗い表示の主色を読めない） */
+[data-md-color-scheme="default"],
+[data-md-color-scheme="slate"] {
+  --ukd-paper: var(--md-default-bg-color);
+  --ukd-rule: color-mix(in srgb, var(--md-default-fg-color) 18%, var(--md-default-bg-color));
+}
+[data-md-color-scheme="default"] {
+  --ukd-ground: color-mix(in srgb, var(--md-primary-fg-color) 10%, #fff);
+  --ukd-title: var(--md-primary-fg-color);
+}
+[data-md-color-scheme="slate"] {
+  --ukd-ground: color-mix(in srgb, var(--md-primary-fg-color) 6%, color-mix(in srgb, #000 40%, var(--md-default-bg-color)));
+  --ukd-title: var(--md-typeset-a-color);
+}
+@media screen {
+  .md-main {
+    background: var(--ukd-ground);
+  }
+  .md-content__inner {
+    margin: 1rem .4rem 1.5rem;
+    padding: .2rem 1.6rem 1.4rem;
+    border: .05rem solid var(--ukd-rule);
+    border-radius: .2rem;
+    background: var(--ukd-paper);
+  }
+  .md-content__inner::before {
+    display: none;
+  }
+}
+@media screen and (min-width: 76.25em) {
+  .md-grid {
+    max-width: 76rem;
+  }
+}
+
+/* ページ題を一番強くする（既定は細い灰色で、本文より弱く見える） */
+.md-typeset h1 {
+  margin: .8em 0 .9em;
+  padding-bottom: .25em;
+  border-bottom: .2rem solid var(--ukd-title);
+  color: var(--ukd-title);
+  font-size: 1.9em;
+  font-weight: 700;
+  letter-spacing: 0;
+}
+
+/* 左の目次は長い名前も省略せず折り返す。コードの灰色の地は付けない */
+.md-nav__link {
+  overflow-wrap: anywhere;
+}
+.md-nav__link .md-ellipsis,
+.md-nav__link > * {
+  white-space: normal;
+  text-overflow: clip;
+}
+.md-sidebar code {
+  margin: 0 .1em;
+  padding: 0;
+  background: transparent;
+  font-size: .95em;
+}
+/* 固定の見出しのぼかしを、紙面の地の色に合わせる */
+@media screen and (min-width: 76.25em) {
+  .md-sidebar .md-nav__title,
+  .md-nav--lifted > .md-nav__list > .md-nav__item--active > .md-nav__link {
+    background: var(--ukd-ground);
+    box-shadow: 0 0 .4rem .4rem var(--ukd-ground);
+  }
 }
 
 /* ヘッダの翻訳ボタン（assets/translate.js）。Translator API が無いブラウザでは、ボタン自体を出さない */

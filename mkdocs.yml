@@ -19,7 +19,9 @@ theme:
   logo: assets/logo.png
   favicon: assets/logo.png
   features:
+    - navigation.tabs
     - navigation.sections
+    - toc.integrate
     - navigation.top
     - navigation.indexes
     - search.suggest
