@@ -2,6 +2,14 @@
 
 各版の変更点です。原文は英語のまま載せています。
 
+## Phase 9.2.1 (Core 4.2.1) (2026/11/12)
+
+- faster execution; the results do not change (word IDs, the use of random numbers and the order of history references are the same). On a synthetic benchmark, loops of built-in commands, user function calls, `${entry}` references and `adddict` take 30-40% less time (the time to load a dictionary is unchanged)
+  - the kind of a statement (`while`, `foreach`, a function call...) is decided once at compile time instead of comparing strings at every run
+  - a function call remembers, per statement, the lookup of the `System.Function.<name>` entry; it is looked up again whenever a new entry is created, so `function` / `rmfunc` at run time work as before
+  - a plain string made into a word at run time (`set`, `adddict`...) skips the lexer, and an entry that is already registered is found without splitting its name
+  - deleting a word (e.g. `set` dropping the old value) no longer searches for the word again
+
 ## Phase 9.2.0 (Core 4.2.0) (2026/10/23)
 
 - Phase 9 can replace Phase 8 (8.2.x) as it is: the dictionaries, the SAORI modules and the baseware link of a Phase 8 ghost work by only replacing shiori.dll. There is no incompatible change like the one from Phase 7 to 8. The intended differences are the UTF-8 (BOM) files written by `save`/`savecrypt` (8.2.9 and earlier cannot read them), the Charset header, and the Unicode code point order (see 9.0.0 below)
