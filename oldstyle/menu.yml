@@ -1,0 +1,213 @@
+# 左のメニューの定義（旧 wiki の MenuBar に当たる）。サイトの階層構造の元になるファイルで、
+# 左のメニュー・上のパンくずリスト・各節の索引ページが、すべてここから作られる。
+#
+# 項目の書き方（menu: の下に並べる。children: で下の項目を入れ子にできる。深さは自由）
+#   - title: 表示する名前        必須
+#     page: 原稿のパス           サイト内のページ。リポジトリ内のパス（`startup/cheatsheet.md`）で書く
+#                                `INDEX.md#見出し` のように # でアンカーも付けられる
+#                                `grammar/05-expressions.md` や `kis/set.md` のように、まとめた元の原稿も書ける
+#                                （まとめたページの、その項目の見出しへのリンクになる）。
+#                                分類ごとにまとめたページ（`kis/dictionary.md` など。scripts/prepare_site.py の
+#                                GROUP_PAGES のファイル名）も書ける
+#     index: startup/            下の項目の索引ページを自動で作る。その URL（小文字の英数字とハイフン、末尾は /）。
+#                                children: と list: に書いたページを並べるだけの、小さなページになる
+#     url: https://...           外部のページ
+#     children: [...]            下の項目。左のメニューに出て、索引ページにも並ぶ
+#     list: other                そのディレクトリの原稿のうち、menu.yml のどこにも載っていないページを、この項目の下に置く。
+#                                左のメニューには出さず、索引ページとパンくずリストにだけ使う（数が多いページ向け）。
+#                                並びは、ディレクトリに .nav.yml があればその順、残りは各ページの題（H1）の順
+#   page: index: url: は、1 項目に 1 つだけ書ける。どれも書かない項目は、リンクの無い見出しになる（下にページを置けない）。
+#
+# 最上位の項目は、左のメニューでは見出し（下の項目が無いものは 1 行のリンク）になる。
+# 原稿は、children: か list: のどこかに必ず載せる（載っていないページがあると、ビルドが止まる）。
+# 同じページを何か所に書いてもよいが、パンくずリストは最初に出てくる項目の下になる。
+# 原稿のパスやアンカーが違っても、ビルド（oldstyle/build.py）が止まる。表示は、書いた順のまま。
+menu:
+  - title: トップページ
+    page: INDEX.md
+
+  - title: 華和梨の配布元
+    children:
+      - title: 華和梨のリポジトリ
+        url: https://github.com/ukatech/kawari
+      - title: ダウンロード
+        url: https://github.com/ukatech/kawari/releases
+
+  - title: はじめに
+    index: startup/
+    children:
+      - title: 華和梨とは
+        page: startup/what-is-kawari.md
+      - title: 導入ガイド
+        page: startup/getting-started.md
+
+  - title: 文法
+    page: grammar/index.md
+    children:
+      - title: ユーザーズマニュアルの読み方
+        page: grammar/00-introduction.md
+      - title: 辞書ファイル
+        page: grammar/01-dictionary-files.md
+      - title: エントリ定義
+        page: grammar/02-entry-definition.md
+      - title: 置換とエントリ呼び出しと実行
+        page: grammar/03-substitution.md
+      - title: エントリ呼び出しのバリエーション
+        page: grammar/04-entry-call-variations.md
+      - title: 演算式
+        page: grammar/05-expressions.md
+      - title: インラインスクリプト
+        page: grammar/06-inline-script.md
+
+  - title: SHIORI/SAORI インターフェース
+    page: shiori/index.md
+    children:
+      - title: コールバック
+        page: shiori/callbacks.md
+      - title: その他のシステムエントリ
+        page: shiori/system-entries.md
+      - title: 栞としての華和梨
+        page: shiori/as-shiori.md
+      - title: SAORI モジュールとしての華和梨
+        page: shiori/as-saori.md
+      - title: SAORI モジュールの使用宣言
+        page: shiori/saori-register.md
+      - title: SAORI モジュール呼び出し
+        page: shiori/saori-call.md
+      - title: イベント
+        page: shiori/events.md
+      - title: コミュニケート
+        page: shiori/communicate.md
+      - title: 自発トーク
+        page: shiori/random-talk.md
+
+  - title: KIS コマンド
+    page: kis/index.md
+    children:
+      - title: 構文コマンド
+        page: kis/syntax.md
+      - title: 辞書操作
+        page: kis/dictionary.md
+      - title: ファイル操作
+        page: kis/files.md
+      - title: カウンタ
+        page: kis/counters.md
+      - title: 文字列操作
+        page: kis/strings.md
+      - title: 正規表現
+        page: kis/regexp.md
+      - title: SAORI
+        page: kis/saori.md
+      - title: 本体との連携
+        page: kis/baseware.md
+      - title: コミュニケート機能
+        page: kis/communication.md
+      - title: 出力
+        page: kis/output.md
+      - title: 補助機能
+        page: kis/helpers.md
+      - title: その他
+        page: kis/misc.md
+
+  - title: 幸水（kosui）
+    page: kosui/index.md
+    children:
+      - title: 起動方法
+        page: kosui/launch.md
+      - title: 検査モード（--check）
+        page: kosui/check-mode.md
+      - title: 操作方法
+        page: kosui/operation.md
+      - title: 幸水を使ったデバッグの指針
+        page: kosui/debugging.md
+
+  - title: ヒント集
+    page: tips/index.md
+    children:
+      - title: 疑似 kawari.ini
+        page: tips/pseudo-kawari-ini.md
+      - title: ストーリートーク
+        page: tips/story-talk.md
+      - title: エントリの重複回避呼び出し
+        page: tips/non-overlap-call.md
+      - title: エントリの順序呼び出し
+        page: tips/sequential-call.md
+      - title: コミュニケートコマンドの改善
+        page: tips/communicate-helpers.md
+      - title: 簡易文字種判別
+        page: tips/char-type.md
+      - title: SHIORI/3.0 NOTIFY 処理
+        page: tips/notify-handling.md
+      - title: デバッグ支援スクリプト
+        page: tips/debug-support.md
+
+  - title: 移行ガイド
+    page: migration/index.md
+    children:
+      - title: 華和梨 8 から Phase 9 への乗り換え
+        page: migration/00-from-phase8.md
+      - title: Phase 7 以前からの移行ガイド
+        page: migration/01-overview.md
+      - title: kawari.ini 消滅
+        page: migration/02-kawari-ini.md
+      - title: システムエントリ整理/イベントエントリ統合
+        page: migration/03-system-entries.md
+      - title: マッチエントリ消滅
+        page: migration/04-match-entries.md
+      - title: 内蔵 piro 消滅
+        page: migration/05-piro.md
+      - title: 履歴参照ルールが小変更
+        page: migration/06-history-reference.md
+      - title: expr, test 消滅
+        page: migration/07-expr-test.md
+      - title: if 文の文法変更
+        page: migration/08-if-syntax.md
+      - title: enumerate 消滅
+        page: migration/09-enumerate.md
+      - title: get/set の動作変更
+        page: migration/10-get-set.md
+      - title: その他の KIS コマンドの変更
+        page: migration/11-other-commands.md
+      - title: 複数行対応
+        page: migration/12-multiline.md
+
+  - title: 仕様書
+    page: spec/index.md
+    children:
+      - title: KIS プログラミングリファレンス
+        page: spec/00-introduction.md
+      - title: 華和梨とは何か？
+        page: spec/01-what-is-kawari.md
+      - title: 華和梨言語仕様
+        page: spec/02-semantics.md
+      - title: 華和梨文法
+        page: spec/03-syntax.md
+      - title: 外部インターフェース
+        page: spec/04-external-interfaces.md
+      - title: ロードマップ
+        page: spec/05-roadmap.md
+      - title: 文法仕様（EBNF）
+        page: spec/06-bnf.md
+
+  - title: その他
+    index: other/
+    children:
+      - title: エラーメッセージ一覧
+        page: other/error-messages.md
+      - title: インラインスクリプトの追加方法
+        page: other/adding-kis-commands.md
+      - title: 華和梨ソース概略
+        page: other/source-overview.md
+      - title: 華和梨のライセンスについて
+        page: other/license.md
+      - title: 更新履歴（ChangeLog）
+        page: other/changelog.md
+      - title: ストーリー（STORY）
+        page: other/story.md
+
+  - title: 連絡
+    children:
+      - title: 整備班BTS
+        url: https://bts.shillest.net/
+      - title: GitHub Issues
+        url: https://github.com/ukatech/kawari-docs/issues

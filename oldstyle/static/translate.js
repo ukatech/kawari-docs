@@ -1,4 +1,4 @@
-/* 翻訳ボタン。ブラウザ組み込みの Translator API（Chrome 138 以降のデスクトップ版など）で、
+/* 翻訳ボタン（ヘッダの検索欄の右横）。ブラウザ組み込みの Translator API（Chrome 138 以降のデスクトップ版など）で、
    表示中のページの本文を日本語から英語・中国語（繁体・簡体）へ訳す。
    - API が無いブラウザではボタンを出さない
    - 訳すのは日本語を含む文だけ。コード（code / pre / kbd）と translate="no" の中は訳さない
@@ -19,8 +19,8 @@
     { code: 'zh', label: '简体中文' }
   ];
   var STORE_KEY = 'ukadoc-translate-lang';
-  var ROOTS = '.md-content, .md-sidebar';
-  var SKIP = 'pre, code, kbd, script, style, svg, [translate="no"], .headerlink, .ukadoc-translate';
+  var ROOTS = '#site-title, #body, #menubar';
+  var SKIP = 'pre, code, kbd, script, style, svg, [translate="no"], .anchor_super, .ukadoc-translate, .site-search__dropdown';
   var JAPANESE = /[぀-ヿ㐀-鿿ｦ-ﾟ]/;
 
   // 文の途中に置ける要素。これ以外（p / li / td / br など）は文の切れ目になる
@@ -386,12 +386,12 @@
     state.htmlLang = document.documentElement.lang;
 
     var wrap = document.createElement('div');
-    wrap.className = 'md-header__option ukadoc-translate';
+    wrap.className = 'ukadoc-translate';
     wrap.setAttribute('translate', 'no');
 
     var button = document.createElement('button');
     button.type = 'button';
-    button.className = 'md-header__button md-icon ukadoc-translate__button';
+    button.className = 'ukadoc-translate__button';
     button.title = 'Translate / 翻訳';
     button.setAttribute('aria-label', 'Translate / 翻訳');
     button.setAttribute('aria-haspopup', 'true');
@@ -443,10 +443,9 @@
       if (b.dataset.lang) start(b.dataset.lang, true); else showOriginal();
     });
 
-    var header = document.querySelector('.md-header__inner');
-    if (!header) return false;
-    var search = header.querySelector('label[for="__search"]');
-    header.insertBefore(wrap, search || null);
+    var bar = document.getElementById('search');
+    if (!bar) return false;
+    bar.appendChild(wrap);
     return true;
   }
 

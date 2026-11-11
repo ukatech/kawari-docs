@@ -1,0 +1,705 @@
+@charset "UTF-8";
+/* PukiWiki 1.5 の標準スキン（skin/pukiwiki.css）の見た目を、HTML5 で模したスタイル
+   （里々マニュアル（satori-docs）の oldstyle/static/style.css を移したもの）。
+   wiki の規則のうち、このサイトで使う分（文字・リンク・見出し・リスト・表・pre・ヘッダ・左のメニュー）だけを持つ。
+   寸法は wiki のまま。色は、ヘッダのアイコン（黒）に合わせて、wiki の青系の配色を灰色（ほんの少し青み）にしてある。
+   決め方は次のとおり。
+   - 見出しの帯・表・pre・目次の枠など、wiki で青系だった地や枠の色は、青みをわずかに残した灰色にする
+     （見出しの帯 #ddeeff → #dee2e8、表の地 #ccd5dd → #c5cbd4 など）
+   - リンクは、wiki の青（#215dc6）の彩度を落とした青 #2e5a92。訪問済みのリンクは、彩度を落とした紫 #6a4c8c
+   - 色に意味があるもの（note の青系の枠、warning の赤系の枠、検索語の強調の黄色）は、wiki に倣った色
+   - 無彩色（黒・白・灰色）はそのまま
+   wiki の道具（ナビゲータ・ツールバー・最終更新・フッタ）は無い */
+
+/* ---- 文字・リンク ---- */
+html {
+	color: black;
+	background-color: white;
+}
+body {
+	color: black;
+	background-color: white;
+	/* 下はブラウザの既定（wiki と同じ 8px）。上の 8px は、ヘッダの padding-top で空ける
+	   （body の margin にすると、スクロールの始めにヘッダが上端へ貼り付くまで 8px 動いてしまう） */
+	margin: 0 2% 8px 2%;
+	font-size: 100%;
+	font-family: "ヒラギノ角ゴ ProN W3", "Hiragino Kaku Gothic ProN", "メイリオ", "Meiryo", "ＭＳ Ｐゴシック", "Osaka", "verdana", "arial", "helvetica", sans-serif;
+}
+pre, dl, ol, p, blockquote {
+	line-height: 130%;
+}
+blockquote {
+	margin-left: 32px;
+}
+a:link {
+	color: #2e5a92;
+	background-color: inherit;
+	text-decoration: none;
+}
+a:active {
+	color: #2e5a92;
+	background-color: #d6dce5;
+	text-decoration: none;
+}
+a:visited {
+	color: #6a4c8c;
+	background-color: inherit;
+	text-decoration: none;
+}
+a:hover {
+	color: #2e5a92;
+	background-color: #d6dce5;
+	text-decoration: underline;
+}
+img {
+	border: none;
+	vertical-align: middle;
+}
+em {
+	font-style: italic;
+}
+strong {
+	font-weight: bold;
+}
+
+/* ---- 見出し ---- */
+h1, h2 {
+	font-family: verdana, arial, helvetica, sans-serif;
+	color: inherit;
+	letter-spacing: .15em;
+	background-color: #dee2e8;
+	padding: .3em;
+	border: 0;
+	margin: 0 0 .5em 0;
+}
+h3 {
+	font-family: verdana, arial, helvetica, sans-serif;
+	border-bottom: 3px solid #dee2e8;
+	border-top: 1px solid #dee2e8;
+	border-left: 10px solid #dee2e8;
+	border-right: 5px solid #dee2e8;
+	color: inherit;
+	background-color: #ffffff;
+	padding: .3em;
+	margin: 0 0 .5em 0;
+}
+h4 {
+	font-family: verdana, arial, helvetica, sans-serif;
+	border-left: 18px solid #dee2e8;
+	color: inherit;
+	background-color: #ffffff;
+	padding: .3em;
+	margin: 0 0 .5em 0;
+}
+h5, h6 {
+	font-family: verdana, arial, helvetica, sans-serif;
+	color: inherit;
+	background-color: #dee2e8;
+	padding: .3em;
+	border: 0;
+	margin: 0 0 .5em 0;
+}
+/* wiki では見出しの前に「↑」の行（jumpmenu）があって間が空く。その代わりに、本文の見出しの上を空ける */
+#body h2, #body h3, #body h4 {
+	margin-top: 1.2em;
+}
+#body > .contents:first-child + h2,
+#body > h2:first-child, #body > h3:first-child {
+	margin-top: 0;
+}
+/* 見出しの末尾の †（その見出しへのリンク） */
+.anchor_super {
+	font-size: xx-small;
+	vertical-align: super;
+	margin-left: .5em;
+	user-select: none;
+}
+
+dt {
+	font-weight: bold;
+	margin-top: 1em;
+	margin-left: 1em;
+}
+ul {
+	margin-top: .5em;
+	margin-bottom: .5em;
+	line-height: 130%;
+}
+/* wiki のリスト（list1 / list-indent1）の字下げ */
+#body ul, #body ol {
+	padding-left: 16px;
+	margin-left: 16px;
+}
+#body ul {
+	list-style-type: disc;
+}
+#body ul ul {
+	list-style-type: circle;
+}
+#body ul ul ul {
+	list-style-type: square;
+}
+/* wiki の hr.full_hr。まとめたページの項目の区切りにも使う */
+hr, hr.full_hr {
+	border-style: ridge;
+	border-color: #333333;
+	border-width: 1px 0;
+}
+
+/* ---- コード ---- */
+pre {
+	border-top: #dde0e8 1px solid;
+	border-bottom: #888c99 1px solid;
+	border-left: #dde0e8 1px solid;
+	border-right: #888c99 1px solid;
+	padding: .5em;
+	margin-left: 1em;
+	margin-right: 2em;
+	white-space: pre-wrap;
+	word-wrap: break-word;
+	color: black;
+	background-color: #f3f4f7;
+	tab-size: 4;
+}
+code, pre, kbd {
+	font-family: Consolas, "ＭＳ ゴシック", "MS Gothic", Osaka-Mono, monospace;
+}
+pre code {
+	font-size: inherit;
+}
+:not(pre) > code {
+	padding: 0 .2em;
+	background-color: #eef1f5;
+}
+
+/* ---- 表（wiki の style_table / style_th / style_td） ---- */
+table {
+	padding: 0;
+	border: 0;
+	margin: .5em 0 1em 0;
+	text-align: left;
+	color: inherit;
+	background-color: #c5cbd4;
+	border-spacing: 1px;
+	max-width: 100%;
+}
+th {
+	padding: 5px;
+	margin: 1px;
+	text-align: center;
+	color: inherit;
+	background-color: #eeeeee;
+}
+td {
+	padding: 5px;
+	margin: 1px;
+	color: inherit;
+	background-color: #eef1f5;
+}
+th, td {
+	overflow-wrap: break-word;
+}
+thead th {
+	background-color: #e2e6ec;
+}
+
+/* ---- 注（!!! note / warning）。note は情報の青系、warning は注意の赤系。色に意味があるので wiki に倣う ---- */
+.admonition {
+	border: 1px solid #ccd5dd;
+	background-color: #f5f8ff;
+	margin: .5em 0 1em 0;
+	padding: .3em 1em;
+}
+.admonition-title {
+	margin: 0;
+	padding: .2em 0;
+	font-weight: bold;
+}
+.admonition.warning, .admonition.danger {
+	border-color: #d9a3a3;
+	background-color: #fff3f3;
+}
+.admonition p {
+	margin: 0;
+	padding: 0 0 .5em 0;
+}
+
+/* ---- ヘッダ（wiki の div#header: 左にロゴ、ページ名の h1.title。URL の代わりにパンくずリスト）。
+   検索欄と翻訳ボタンは右上（wiki の div#banner の位置）。
+   アイコン（assets/logo.png。300x300）は、スクロールしても画面の上端に残す（yaya-docs と同じ。狭い画面を除く）ので、50x50 に縮めて出す。
+   区切りの hr.full_hr もヘッダの中に置いて、一緒に残す。
+   ヘッダは最初から画面の上端（top: 0）にあるので、スクロールしても動かない。
+   ヘッダの高さ（--header-h）は、パンくずリストの折り返しで変わるので menu.js が測る。下の値は測る前の目安 ---- */
+html {
+	--header-h: 62px;
+	scroll-padding-top: calc(var(--header-h) + 4px);   /* #アンカーの見出しが、ヘッダに隠れないように */
+}
+#header {
+	position: sticky;
+	top: 0;
+	z-index: 50;
+	padding: 8px 0 0 0;                  /* アイコンが画面の上端に付かないように（body の上の margin の代わり） */
+	margin: 0;
+	background-color: white;
+	word-break: break-all;
+	display: flow-root;
+}
+#site-logo:link, #site-logo:visited, #site-logo:hover, #site-logo:active {
+	background-color: transparent;
+}
+img#logo {
+	float: left;
+	margin-right: 14px;
+}
+/* wiki ではページ名がリンクだったので、リンクの色 */
+h1.title {
+	color: #2e5a92;
+	font-size: 22px;
+	font-weight: bold;
+	line-height: 1.25;
+	background-color: transparent;
+	padding: 0;
+	border: 0;
+	margin: 4px 0 0 0;
+}
+#header hr.full_hr {
+	clear: both;
+	margin: 4px 0 0 0;
+}
+/* パンくずリスト（wiki ではページの URL を小さい字で出していた位置） */
+#breadcrumb ul {
+	display: flex;
+	flex-wrap: wrap;
+	margin: 0;
+	padding: 0;
+	list-style: none;
+	font-size: 80%;
+	line-height: 1.3;
+}
+#breadcrumb li + li::before {
+	content: " > ";
+	white-space: pre;
+}
+
+/* 検索欄: 「マニュアル内検索」の薄い文字と、右端の虫メガネ。右横に翻訳ボタン */
+#search {
+	float: right;
+	position: relative;
+	display: flex;
+	align-items: center;
+	gap: .3em;
+	width: 18em;
+	margin: 12px 0 0 1em;
+}
+#search form {
+	flex: 1 1 auto;
+	margin: 0;
+}
+#search .search-field {
+	position: relative;
+}
+#search input {
+	box-sizing: border-box;
+	width: 100%;
+	padding: .25em 1.8em .25em .4em;
+	font: inherit;
+	font-size: 90%;
+}
+#search .search-icon {
+	position: absolute;
+	top: 50%;
+	right: .4em;
+	transform: translateY(-50%);
+	font-size: 90%;
+	line-height: 1;
+	opacity: .35;
+	pointer-events: none;
+}
+#search input::-webkit-search-cancel-button {
+	margin-right: 1.2em;
+}
+
+/* ---- 本文（div#body）と左のメニュー（div#menubar）。HTML では本文が先で、order で左右を入れ替える ---- */
+#contents {
+	margin-top: 4px;
+	display: flex;
+	flex-flow: row nowrap;
+	/* 左のメニューを sticky にするため、伸ばさない（伸ばすと本文と同じ高さになって、貼り付かない） */
+	align-items: flex-start;
+	word-break: break-all;
+	overflow-wrap: break-word;
+}
+/* 左のメニューは、スクロールしてもヘッダの下に貼り付いて残る（yaya-docs と同じ）。
+   画面より長いときは、メニューの中だけをスクロールする */
+#menubar {
+	min-width: 18em;
+	max-width: 18em;
+	padding: 0;
+	margin: 4px;
+	font-size: 90%;
+	position: sticky;
+	/* 貼り付く位置は、貼り付く前の位置（ヘッダの下に #contents の margin-top 4px と、メニューの margin 4px）と同じにする。
+	   違うと、スクロールの始めにメニューだけが動いて、ヘッダとの間が変わる */
+	top: calc(var(--header-h) + 8px);
+	/* sticky の要素は、親（#contents）の下端より下には出られない。一番下までスクロールすると、
+	   #contents の下端は body の下の margin（8px）の分だけ画面の下端より上に来る。メニューの margin の下端が
+	   それより下にあると、メニューが押し上げられてずれる。そこで、上の 8px、下の margin（4px）、body の margin（8px）を引き、
+	   端数の余裕を 4px とる */
+	max-height: calc(100vh - var(--header-h) - 24px);
+	box-sizing: border-box;
+	overflow-x: hidden;
+	overflow-y: auto;
+	overscroll-behavior: contain;
+	order: 1;
+	flex-grow: 0;
+}
+#menubar ul {
+	margin: 0 0 0 1em;
+	padding: 0 0 0 .5em;
+}
+#menubar ul li {
+	line-height: 125%;
+}
+#menubar h4 {
+	font-size: 110%;
+	margin: 1em 0 .3em 0;
+}
+#menubar .menu-item {
+	margin: 0 0 .5em 0;
+}
+#menubar .menu-item + h4 {
+	margin-top: 0;
+}
+/* サイトの外へ飛ぶリンクの印（読み上げには出さない） */
+#menubar a.external::after {
+	content: "\2197";
+	content: "\2197" / "";
+	margin-left: .2em;
+	font-size: 85%;
+	color: #777777;
+}
+#menubar a[aria-current="page"] {
+	font-weight: bold;
+}
+#body {
+	padding: 0;
+	margin: 0 0 0 .5em;
+	max-width: 98%;
+	min-width: 0;
+	order: 2;
+	flex-grow: 1;
+	padding-bottom: 2em;
+}
+
+/* 索引ページの長い一覧: 3 列のグリッド。幅が狭くなると、列が減って 1 列になる */
+#body ul.index-grid {
+	display: grid;
+	grid-template-columns: repeat(auto-fill, minmax(max(13em, calc((100% - 3em) / 3)), 1fr));
+	gap: .3em 1.5em;
+	margin: .5em 0 1em;
+	padding-left: 1.5em;
+}
+ul.index-grid li {
+	margin: 0;
+	line-height: 130%;
+}
+
+/* ページ先頭の目次（wiki の #contents プラグインの div.contents） */
+.contents {
+	margin: 0 0 1em 0;
+	padding: .3em .5em .3em 0;
+	border: 1px solid #c5cbd4;
+	background-color: #f6f7f9;
+	font-size: 90%;
+}
+#body .contents ul {
+	margin-top: .2em;
+	margin-bottom: .2em;
+}
+.contents li {
+	margin-bottom: .1em;
+}
+
+/* ---- 検索（search.js） ---- */
+.site-search__dropdown {
+	position: absolute;
+	top: 100%;
+	right: 0;
+	z-index: 30;
+	box-sizing: border-box;
+	width: min(460px, calc(100vw - 1em));
+	max-height: 70vh;
+	overflow-y: auto;
+	border: 1px solid #888c99;
+	background: #ffffff;
+	box-shadow: 0 2px 6px rgba(0, 0, 0, .3);
+	color: #000000;
+	font-size: 90%;
+	line-height: 1.4;
+	text-align: left;
+	word-break: normal;
+}
+.site-search__dropdown[hidden] {
+	display: none;
+}
+.site-search__dropdown a,
+.site-search__dropdown a:link,
+.site-search__dropdown a:visited {
+	color: inherit;
+	text-decoration: none;
+}
+.site-search__item {
+	display: block;
+	padding: .4em .6em;
+	border-bottom: 1px dotted #c5cbd4;
+}
+.site-search__all {
+	display: block;
+	padding: .5em;
+	background: #eef1f5;
+	text-align: center;
+	color: #2e5a92 !important;
+}
+.site-search__item.is-active,
+.site-search__all.is-active {
+	background: #d6dce5;
+}
+.site-search__title {
+	font-weight: bold;
+	color: #2e5a92;
+}
+.site-search__page {
+	color: #666666;
+	font-size: 90%;
+}
+.site-search__snippet {
+	display: block;
+	color: #555555;
+}
+.site-search__empty {
+	margin: 0;
+	padding: .5em;
+	color: #666666;
+}
+.site-search__dropdown mark,
+#search-results mark {
+	background-color: #ffff66;
+}
+#search-results .search-page {
+	color: #666666;
+	font-size: 90%;
+}
+#search-results li {
+	margin-bottom: .8em;
+}
+
+/* ---- 翻訳ボタン（translate.js）。検索欄の右横。Translator API が無いブラウザでは出ない ---- */
+.ukadoc-translate {
+	position: relative;
+	flex: none;
+}
+.ukadoc-translate__button {
+	width: 1.8em;
+	height: 1.8em;
+	padding: .15em;
+	border: 1px solid #c5cbd4;
+	background: #ffffff;
+	color: #333333;
+	cursor: pointer;
+}
+.ukadoc-translate__button svg {
+	display: block;
+	width: 100%;
+	height: 100%;
+	fill: currentColor;
+}
+.ukadoc-translate__button--on {
+	background: #d6dce5;
+}
+.ukadoc-translate__menu {
+	position: absolute;
+	top: 100%;
+	right: 0;
+	z-index: 40;
+	min-width: 13em;
+	margin-top: 2px;
+	padding: .2em 0;
+	border: 1px solid #888c99;
+	background: #ffffff;
+	color: #000000;
+	box-shadow: 0 2px 6px rgba(0, 0, 0, .3);
+	word-break: normal;
+}
+.ukadoc-translate__menu[hidden] {
+	display: none;
+}
+.ukadoc-translate__menu ul {
+	margin: 0;
+	padding: 0;
+	list-style: none;
+}
+.ukadoc-translate__menu li button {
+	display: block;
+	width: 100%;
+	padding: .35em .8em;
+	border: 0;
+	background: none;
+	color: inherit;
+	font: inherit;
+	text-align: left;
+	cursor: pointer;
+}
+.ukadoc-translate__menu li button:hover,
+.ukadoc-translate__menu li button:focus-visible {
+	background: #d6dce5;
+}
+.ukadoc-translate__menu li button[aria-pressed="true"] {
+	font-weight: bold;
+	color: #2e5a92;
+}
+.ukadoc-translate__status {
+	margin: .2em 0 0;
+	padding: .3em .8em 0;
+	border-top: 1px solid #c5cbd4;
+	color: #666666;
+	font-size: 90%;
+}
+.ukadoc-translate__status:empty {
+	display: none;
+}
+
+/* ---- 幅が狭いとき（wiki と同じ 767px 以下）: 本文 → メニューの縦並びにする ---- */
+@media (max-width: 767px) {
+	/* 縦に狭いので、ヘッダは貼り付けない（yaya-docs と同じ） */
+	html {
+		scroll-padding-top: 0;
+	}
+	#header {
+		position: static;
+	}
+	/* 本文 → メニューの順に縦に積む（HTML の順のまま。flex のままだと、広い表が本文の幅を押し広げる） */
+	#contents {
+		display: block;
+	}
+	#menubar {
+		width: auto;
+		min-width: 0;
+		max-width: none;
+		font-size: 100%;
+		order: 2;
+		/* 本文の下に積むので、貼り付けない */
+		position: static;
+		max-height: none;
+		overflow: hidden;
+	}
+	#body {
+		order: 1;
+		max-width: none;
+		margin: 0;
+		overflow-wrap: anywhere;
+	}
+	#body img {
+		max-width: 95%;
+		height: auto;
+	}
+	/* 幅の広い表は、表の中だけを横にスクロールする */
+	#body table {
+		display: block;
+		max-width: 100%;
+		overflow-x: auto;
+	}
+	#body pre {
+		overflow-x: auto;
+	}
+	#search {
+		float: none;
+		width: auto;
+		margin: 0 0 .5em 0;
+	}
+	h1.title {
+		font-size: 20px;
+	}
+}
+
+/* ---- 幅が狭いとき: 左のメニュー（#menubar）を、検索欄の左のボタン（menu.js）で開閉する引き出しにする（yaya-docs と同じ） ----
+   js-drawer は menu.js が <html> に付ける（JavaScript が動かなければ、メニューは上のとおり本文の下に出る）。
+   引き出しと暗幕は、ヘッダの下（--drawer-top。menu.js が開くときに測る。ヘッダが画面の外なら画面の上）から。
+   ボタンの見た目は翻訳ボタン（.ukadoc-translate__button）と揃える */
+.ukadoc-drawer-toggle,
+.ukadoc-drawer-backdrop {
+	display: none;
+}
+@media (max-width: 767px) {
+	html.js-drawer .ukadoc-drawer-toggle {
+		display: block;
+		flex: none;
+		box-sizing: border-box;
+		width: 1.8em;
+		height: 1.8em;
+		padding: .15em;
+		border: 1px solid #c5cbd4;
+		background: #ffffff;
+		color: #333333;
+		cursor: pointer;
+	}
+	html.js-drawer .ukadoc-drawer-toggle svg {
+		display: block;
+		width: 100%;
+		height: 100%;
+		fill: currentColor;
+	}
+	html.js-drawer.drawer-open .ukadoc-drawer-toggle {
+		background: #d6dce5;
+	}
+	html.js-drawer #menubar {
+		display: none;
+	}
+	html.js-drawer.drawer-open #menubar {
+		display: block;
+		position: fixed;
+		top: var(--drawer-top, 0);
+		bottom: 0;
+		left: 0;
+		z-index: 60;
+		box-sizing: border-box;
+		width: min(320px, 85vw);
+		max-height: none;
+		margin: 0;
+		padding: 0 .3em 2em .5em;
+		overflow-y: auto;
+		overscroll-behavior: contain;
+		background: #ffffff;
+		border-right: 1px solid #c5cbd4;
+		box-shadow: 2px 0 8px rgba(0, 0, 0, .4);
+		outline: none;
+	}
+	html.js-drawer.drawer-open .ukadoc-drawer-backdrop {
+		display: block;
+		position: fixed;
+		top: var(--drawer-top, 0);
+		right: 0;
+		bottom: 0;
+		left: 0;
+		z-index: 55;
+		background: rgba(0, 0, 0, .4);
+	}
+	html.js-drawer.drawer-open body {
+		overflow: hidden;
+	}
+}
+
+@media print {
+	#header {
+		position: static;
+	}
+	a:link,
+	a:visited {
+		text-decoration: underline;
+	}
+	img#logo,
+	#menubar,
+	#search,
+	.ukadoc-drawer-backdrop {
+		display: none;
+	}
+}

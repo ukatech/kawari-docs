@@ -1,0 +1,39 @@
+<!doctype html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>$title</title>
+<meta name="description" content="$description">
+<link rel="icon" href="${root}assets/logo.png">
+<link rel="stylesheet" href="${root}style.css">
+<script src="${root}menu.js"></script>
+$head</head>
+<body data-root="$root"$body_attr>
+<header id="header">
+<a id="site-logo" href="$home"><img id="logo" src="${root}assets/logo.png" width="50" height="50" alt="華和梨マニュアル" title="華和梨マニュアル"></a>
+<div id="search">
+<form action="${root}search/" role="search">
+<div class="search-field">
+<input id="query" name="q" type="search" autocomplete="off" placeholder="マニュアル内検索" title="マニュアル内検索" aria-label="マニュアル内検索" role="combobox" aria-autocomplete="list" aria-expanded="false" aria-controls="search-dropdown">
+<span class="search-icon" aria-hidden="true">🔍</span>
+</div>
+</form>
+</div>
+<div id="site-title">
+<h1 class="title"$h1_attr>$page_title</h1>
+$breadcrumb</div>
+<hr class="full_hr">
+</header>
+<div id="contents">
+<main id="body">
+$content
+</main>
+<nav id="menubar" aria-label="メニュー">
+$menu
+</nav>
+</div>
+<script src="${root}search.js" defer></script>
+<script src="${root}translate.js" defer></script>
+</body>
+</html>

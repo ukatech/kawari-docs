@@ -4,13 +4,13 @@
 
 ## 探し方
 
-- 最初に [INDEX.md](INDEX.md) を開く。「はじめての方へ」「調べたいとき」と、分野ごとのページ表から各ページへ辿れる。
+- 最初に [INDEX.md](INDEX.md) を開く。「はじめての方へ」「調べたいとき」から各ページへ辿れる。分野ごとのページ一覧は、サイトでは各節の索引ページ（`startup/index.md`・`other/index.md`。HTML は `startup/` など）や、各ディレクトリの `index.md` にある。リポジトリでは、ディレクトリのファイル一覧を見る。
 - KIS のコマンドは [kis/index.md](kis/index.md) が分類ごとの一覧。1 コマンド 1 ファイルで、ファイル名はコマンド名（例: `kis/set.md`）。
 - SHIORI/SAORI のインターフェースは [shiori/index.md](shiori/index.md)、幸水（kosui）は [kosui/index.md](kosui/index.md)、ヒント集は [tips/index.md](tips/index.md) が一覧。
 
 ## 構成
 
-- [INDEX.md](INDEX.md): 全体の目次
+- [INDEX.md](INDEX.md): 入口。はじめての方への案内と、調べたいときの行き先
 - `startup/`: 華和梨とは、導入ガイド
 - `grammar/`: 辞書の書き方（`00`〜`06` の章立て）
 - `shiori/`: SHIORI/SAORI インターフェース
