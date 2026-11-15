@@ -2,6 +2,11 @@
 
 各版の変更点です。原文は英語のまま載せています。
 
+## Phase 9.2.2 (Core 4.2.2) (2026/11/16)
+
+- a maintenance release for other environments; nothing changes for users (the distributed binaries behave the same as 9.2.1)
+  - it can be built as a 64 bit (x86_64) library and with the latest MSVC and VC6 (`build/src/msvc_build.py`); the warnings (/W3) of the 64 bit build are fixed
+
 ## Phase 9.2.1 (Core 4.2.1) (2026/11/12)
 
 - faster execution; the results do not change (word IDs, the use of random numbers and the order of history references are the same). On a synthetic benchmark, loops of built-in commands, user function calls, `${entry}` references and `adddict` take 30-40% less time (the time to load a dictionary is unchanged)
