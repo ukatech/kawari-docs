@@ -13,6 +13,7 @@
   - the daylight saving time follows the rules of the OS. The environment variable `TZ` is not looked at (the time zone setting of the OS is used). In `mktime`, a time that does not exist when the clock is put forward (2:30 in spring) is read as the daylight saving time, and a time that exists twice when the clock is put back (1:30 in autumn) is read as the first one (the daylight saving time)
   - the behavior on POSIX is as before (the `localtime` and `mktime` of the OS; the range depends on the `time_t` of the OS)
   - tested with the `kosui` suite on MinGW 32 bit, MSVC x64 / x86 and VC6, and by comparing the calculation with the `datetime` of Python (the years 1 to 9999) and the daylight saving time with the `zoneinfo` of Python (a fake America/Los_Angeles offset function, 2007 to 2037), and the offset of the OS with `_localtime64`. It has not been tried in a time zone that has the daylight saving time on a real Windows
+- in the Kawari 7 compatible mode, a dictionary that starts with a BOM is read as UTF-8 whatever `locale` of `kawari.ini` says (it used to be read in the `locale` charset, so the save data that Phase 9 wrote in UTF-8 with BOM was read as Shift_JIS and the user name and so on were garbled when `kawari.ini` had `locale : Shift_JIS`). The charset is decided in the order BOM, `locale`, then the content; a dictionary without a BOM follows `locale` as before. See [Kawari 7 compatible mode](../spec/07-kawari7-compat.md)
 
 ## Phase 9.3.1 (Core 4.3.1) (2026/11/16)
 
