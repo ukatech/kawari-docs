@@ -72,6 +72,22 @@ SHIORIプロトコルのメッセージはこのようにフラットなフォ�
 
      "System.Response."で始まる全てのエントリを、"`System.Response.<ヘッダ名>`"として扱い、そのエントリの最初の文を評価して、レスポンスヘッダの値とする。"System.Response"エントリの最初の文を、レスポンスステータスコード(200など)とする。
 
+### マルチインスタンス用の関数
+
+`shiori.dll` は、従来の `load` / `loadu` / `request` / `unload` に加えて、1つのプロセスで同じDLLから複数のインスタンスを作るための関数 `multi_load` / `multi_loadu` / `multi_unload` / `multi_request` をエクスポートする(Phase 9.3.0以降。関数の仕様は[ukadoc-specの「マルチインスタンス用関数」](https://ukatech.shillest.net/ukadoc-spec/spec/dll/)による。SSPは使わない)。
+
+- インスタンスは id (1以上の整数)で区別する。`multi_load` / `multi_loadu` が id を返し、失敗したときは `-1` を返す。id は `multi_unload` で解放されると、次の `multi_load*` が再利用することがある
+- 従来の `load` / `request` / `unload` が扱うインスタンスは、これらとは別に1つだけ持つ。`multi_*` のどの id でも、そのインスタンスには届かない。両方を同時に使ってよく、片方を終了しても、もう片方は動き続ける
+- 存在しない id (0以下を含む)に対しては、`multi_unload` は FALSE、`multi_request` は NULL (長さ 0)を返す
+- インスタンスごとに、辞書・SAORI・本体との接続・乱数の状態が独立している。同じ種で `srand` した2つのインスタンスは、互いに影響されず、1つだけで動かしたときと同じ乱数列を返す(Phase 9.3.0で、乱数をプロセスで共有する実装から分けた)
+- 呼び出しは1つのスレッドから順に行うこと(インスタンスの一覧は排他制御していない)
+- YAYAの `CI_check_failed` / `Set_loghandler` / `logsend` に当たる関数は無い
+
+次の状態は、まだインスタンスの間で共有される。
+
+- 同じSAORIのDLLを複数のインスタンスが登録すると、OSには1つのDLLとして読み込まれ(`LoadLibrary` の参照カウント)、SAORI の `load` はインスタンスごとに呼ばれ、`unload` はインスタンスが終わるたびに呼ばれる。SAORI の側が複数回の `load` を想定していないと、片方のインスタンスの終了が、もう片方に影響しうる
+- `rccharset` が切り替える、診断メッセージの言語(日本語か英語か)
+
 ### セキュリティチェック(TODO)
 
 ## SAORI-Serverインターフェース
