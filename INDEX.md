@@ -22,7 +22,7 @@
 - 華和梨って何？ → [華和梨とは](startup/what-is-kawari.md)
 - はじめて華和梨でゴーストを作りたい → [導入ガイド](startup/getting-started.md)
 - 華和梨 8（8.2.x）を使っていて Phase 9 に移りたい → [華和梨 8 から Phase 9 への乗り換え](migration/00-from-phase8.md)（`shiori.dll` を差し替えるだけで動きます）
-- 華和梨 7 以前を使っていた → [移行ガイド](migration/01-overview.md)
+- 華和梨 7 以前を使っていた → [移行ガイド](migration/01-overview.md)（Phase 7.5.0 のゴーストは、Phase 9.3.0 以降であれば辞書を書き換えずに動かせます → [華和梨 7 互換モード](spec/07-kawari7-compat.md)）
 
 ## 調べたいとき
 

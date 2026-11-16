@@ -2,6 +2,18 @@
 
 各版の変更点です。原文は英語のまま載せています。
 
+## Phase 9.3.0 (Core 4.3.0) (2026/11/16)
+
+- add the Kawari 7 compatible mode: a Kawari Phase 7.5.0 ghost (a folder that has `kawari.ini` and no `kawarirc.kis`) runs without rewriting its dictionaries, with the behavior of 7.5.0. The mode is decided per ghost when `shiori.dll` is loaded; `kosui` decides the same way (a `<rcfile>` that ends with `.ini` is read as a Kawari 7 `kawari.ini`). The behavior of the other ghosts does not change. See the specification [Kawari 7 compatible mode](../spec/07-kawari7-compat.md)
+  - `kawari.ini` (`dict` `include` `text` `adddict` `set` `saori` `randomseed` `security` `locale` `debug`), the one-line-per-definition dictionary, encrypted lines, match entries (`["word", ...] : answer`) and the `[SAKURA]` piro files are read. The words are compiled by the lexer and the grammar of 7.5.0 (separators such as `( )` are plain text, the quote is only `"`, `${A&B}`, a history reference that counts only the entry calls, `if cond A [B]` without `else`), not by the compiler of Phase 8 and later
+  - the entry names are flat strings as in 7.5.0: `A.` `A..B` `.A` and `A.B` are different entries, and `@` is an ordinary character, not a local entry (the entry names of Phase 8 and later are split at every `.` and the empty parts are dropped)
+  - `expr` `test` `[` `array` `enumerate` `get` `textload` `readdir` `split` `pirocall` work as in 7.5.0 (they have a different meaning in Phase 8 and later); the other commands of Phase 7.5.0 were checked to give the same results
+  - SHIORI/2.x is answered as 7.5.0 does (`event.*` `system.On*` `resource.*` `compatible.*` match entries, COMMUNICATE, `TEACH`, `TRANSLATE`, `NOTIFY`); the status line is `SHIORI/2.6`, and a SHIORI/3.0 request gets `400 Bad Request` so that the baseware falls back to 2.x
+  - a `=kis` ... `=end` zone and a `$[ ... ]` expression in a word are read to the end in the grammar of Phase 8 and later
+  - the intended differences from 7.5.0: `ver` and `GET Version` tell the version of this Kawari; the values of a request and of a SAORI answer are stored as plain strings (7.5.0 compiled them as words: a quote vanished and `${` `$(` were run); `save` writes UTF-8 with BOM (the Shift_JIS save data of 7.5.0 is read as it is); `locale` Big5 and ISO-8859-1 are not supported
+  - tested against the real 7.5.0: 177 lines of `kosui` give the same output, the SHIORI/2.x requests give the same answers, and 169 requests to a real Kawari 7 ghost (about 9MB of dictionaries) give the same answers byte for byte. The random numbers are the same MT19937, so any difference in the order of the random calls would show up. The tests are `kosui7` and `shiori7` of `build/src/test/` and `ghost_compat7.py`. It has not been tried on a real baseware (SSP and so on)
+- `kosui --check` reads a Kawari 7 ghost in the sandbox as well; nothing is written and no program is started
+
 ## Phase 9.2.2 (Core 4.2.2) (2026/11/16)
 
 - a maintenance release for other environments; nothing changes for users (the distributed binaries behave the same as 9.2.1)

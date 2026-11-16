@@ -19,7 +19,9 @@ kosui --check [--format text|json] [--werror] [--decl] [--no-lint] [--eval ス�
 | --norc | kawarirc.kisを読み込まない。 |
 | --quiet | quietモードで、初期化ファイルを読み込んだ後に直ちに終了する。 |
 | --check | 検査モードで、辞書を安全モードで読み込み、出たエラーと警告を報告して終了する。[検査モード (--check)](check-mode.md) 参照。 |
-| `<rcfile>` | ファイル名を指定することにより、 kawarirc.kisの代わりにそのファイルを初期化ファイルとして読み込む。 |
+| `<rcfile>` | ファイル名を指定することにより、 kawarirc.kisの代わりにそのファイルを初期化ファイルとして読み込む。`.ini`で終わるファイル名を指定すると、華和梨 7 の kawari.ini として読む(Phase 9.3.0以降。[華和梨 7 互換モード](../spec/07-kawari7-compat.md)参照)。 |
+
+フォルダに kawarirc.kis が無く、kawari.ini があるときは、`<rcfile>` を指定しなくても、kawari.ini を華和梨 7 の初期化ファイルとして読み込みます(Phase 9.3.0以降)。
 
 ## インタープリタモード
 

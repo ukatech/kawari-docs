@@ -188,6 +188,8 @@ menu:
         page: spec/05-roadmap.md
       - title: 文法仕様（EBNF）
         page: spec/06-bnf.md
+      - title: 華和梨 7 互換モード
+        page: spec/07-kawari7-compat.md
 
   - title: その他
     index: other/
