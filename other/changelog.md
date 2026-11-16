@@ -2,6 +2,13 @@
 
 各版の変更点です。原文は英語のまま載せています。
 
+## Phase 9.3.2 (Core 4.3.2) (2026/11/17)
+
+- the integers of an expression `$[ ]` are 64 bit (-9223372036854775808 to 9223372036854775807) instead of 32 bit. The seconds of `date %s` after 2038 can be calculated now (`$[ $(date %s) - ${1stTime} ]`). `+` `-` `*` `**` and the unary `-` wrap at 64 bit when they go over the range (they wrapped at 32 bit before); a number that is over the range in a string is limited to the largest / smallest value; the smallest value divided by `-1` (`/` `%`) no longer faults. See [Expressions](../grammar/05-expressions.md)
+  - the integers of `expr` (`+ - * / %` and the comparisons) and `-eq` `-ne` `-lt` `-gt` `-le` `-ge` of `test` in the Kawari 7 compatible mode are 64 bit too (7.5.0 wrapped at 32 bit). A result in the range of 32 bit is the same as 7.5.0. See [Kawari 7 compatible mode](../spec/07-kawari7-compat.md)
+  - the integers outside an expression (`loop` `substr` `rand`, the index of an entry and so on) are still 32 bit
+  - tested with the `kosui` and `kosui7` suites, and `ghost_compat7.py` (169 requests to a real Kawari 7 ghost gave the same answers as 7.5.0 byte for byte)
+
 ## Phase 9.3.1 (Core 4.3.1) (2026/11/16)
 
 - the Kawari 7 compatible mode now works in SHIORI/3.0. `GET Version SHIORI/2.6` is answered with `SHIORI/3.0 200 OK` (7.5.0 answered `SHIORI/2.6`, and a SHIORI/3.0 request got `400 Bad Request`), so the baseware (SSP and so on) uses SHIORI/3.0. The SHIORI/2.x requests are still answered as before. See [Kawari 7 compatible mode](../spec/07-kawari7-compat.md)
