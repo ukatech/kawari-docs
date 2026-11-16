@@ -2,6 +2,13 @@
 
 各版の変更点です。原文は英語のまま載せています。
 
+## Phase 9.3.1 (Core 4.3.1) (2026/11/16)
+
+- the Kawari 7 compatible mode now works in SHIORI/3.0. `GET Version SHIORI/2.6` is answered with `SHIORI/3.0 200 OK` (7.5.0 answered `SHIORI/2.6`, and a SHIORI/3.0 request got `400 Bad Request`), so the baseware (SSP and so on) uses SHIORI/3.0. The SHIORI/2.x requests are still answered as before. See [Kawari 7 compatible mode](../spec/07-kawari7-compat.md)
+  - a SHIORI/3.0 `GET` is read as the equivalent 2.x request and answered with `Value`. An `ID` that has an upper case letter (`OnBoot` and so on) is an event (`event.<ID>`); an `ID` of all lower case letters (`homeurl` `sakura.recommendsites` and so on) is a resource (`resource.<ID>`; `version` `craftman` `craftmanw` `shioriid` `name` are answered by Kawari when the dictionary has none). The others: `OnCommunicate` = COMMUNICATE (Reference0 is the sender, Reference1 the sentence), `OnTeach` = TEACH, `OnTranslate` = TRANSLATE, an `ID` that starts with `\` = GET Word, `getaistate` / `getaistateex` = GET Status
+  - a SHIORI/3.0 `NOTIFY` runs `event.<ID>` when the dictionary has it (`ownerghostname` and `otherghostname` do what `NOTIFY OwnerGhostName` / `OtherGhostName` of 2.x do, `hwnd` remembers the window of the baseware). The References over 7 of a SHIORI/3.0 request are stored in `system.ReferenceN` as well
+  - tested with the `shiori7` suite (the cases before "extensions" still give the same answers on the real 7.5.0) and `ghost_compat7.py` (the answers of the 2.x requests to a real Kawari 7 ghost are the same as 7.5.0 except the status line of `GET Version`). It has not been tried on a real baseware (SSP and so on)
+
 ## Phase 9.3.0 (Core 4.3.0) (2026/11/16)
 
 - add the Kawari 7 compatible mode: a Kawari Phase 7.5.0 ghost (a folder that has `kawari.ini` and no `kawarirc.kis`) runs without rewriting its dictionaries, with the behavior of 7.5.0. The mode is decided per ghost when `shiori.dll` is loaded; `kosui` decides the same way (a `<rcfile>` that ends with `.ini` is read as a Kawari 7 `kawari.ini`). The behavior of the other ghosts does not change. See the specification [Kawari 7 compatible mode](../spec/07-kawari7-compat.md)

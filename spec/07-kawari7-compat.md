@@ -143,9 +143,23 @@
 
 ## SHIORI
 
-7 互換モードは SHIORI/2.x で動く。応答の先頭行は `SHIORI/2.6` で始める。本体は先頭行のバージョンで 2.x か 3.0 かを決めるので、`GET Version` に `SHIORI/2.6 200 OK` を返すと、本体は 2.x の要求を送ってくる。
+7 互換モードは SHIORI/3.0 で動き、SHIORI/2.x の要求も受け付ける。本体は `GET Version` への応答の先頭行のバージョンで 2.x か 3.0 かを決めるので、`GET Version SHIORI/2.6` には `SHIORI/3.0 200 OK` を返して、本体に 3.0 を選ばせる (7.5.0 は `SHIORI/2.6 200 OK` を返した)。2.x のほかの要求への応答の先頭行は `SHIORI/2.6` で始める。
 
-SHIORI/3.0 の要求 (`GET SHIORI/3.0` と `ID` ヘッダを持つもの) には、7.5.0 と同じく `SHIORI/2.6 400 Bad Request` を返す。本体はこの応答で 2.x に切り替える。
+SHIORI/3.0 の要求 (`GET SHIORI/3.0` / `NOTIFY SHIORI/3.0` と `ID` ヘッダを持つもの) は、次の表のとおり 2.x の要求に読み替えて、下の表と同じ動作で処理する。応答の先頭行は `SHIORI/3.0` で、文の本体は `Value` ヘッダに入れる。`GET` の `ID` に半角の大文字 (A-Z) が 1 つでもあればイベント、全部小文字 (数字・記号は問わない) なら資源である。7.5.0 は 3.0 の要求に `SHIORI/2.6 400 Bad Request` を返したので、これは 7.5.0 との違いである。
+
+| 3.0 の `GET` の `ID` | 読み替え先 |
+|---|---|
+| `OnCommunicate` | `GET Sentence` (COMMUNICATE)。`Reference0` を `Sender`、`Reference1` を `Sentence` とする |
+| `OnTeach` | `TEACH`。`Reference0` を `Word` とする |
+| `OnTranslate` | `TRANSLATE Sentence`。`Reference0` を `Sentence` とする。空なら `204` を返す |
+| `\` で始まるもの (`\ms` など) | `GET Word`。`ID` を `Type` とする |
+| `getaistate` / `getaistateex` | `GET Status`。`getaistateex` の `Reference0` が 1 以上なら `204` を返す (AI の状態は 1 組だけ) |
+| 大文字を含むその他のもの (`OnBoot` `ShioriEcho` `KawariCommand` など) | `GET Sentence` (`Event` あり)。`ID` を `Event` とする |
+| 全部小文字のもの (`homeurl` `sakura.recommendsites` など) | `GET String`。`resource.ID` を評価する。空のときは、`version` `craftman` `craftmanw` `shioriid` `name` に限り、華和梨が答える |
+
+3.0 のイベントの `Reference` は、8 個より多くても `system.Reference0`〜 に全部入れる (2.x は 0〜7 だけである)。
+
+3.0 の `NOTIFY` は `204` を返す。`ID` が `ownerghostname` なら `Reference0` を `system.Ghost` に入れて `system.OnNotifyGhost` を、`otherghostname` なら各 `Reference` (`ゴースト名\1サーフェス\1サーフェス` の形) を `system.OtherGhost` と `system.OtherGhostEx` に入れて `system.OnNotifyOther` を評価する (2.x の `NOTIFY OwnerGhostName` / `NOTIFY OtherGhostName` と同じ)。`hwnd` なら `Reference0` を本体のウィンドウとして覚える。どの `ID` でも、`Reference` を `system.Reference0`〜 に、`ID` を `system.EventName` に入れて、`event.ID` があれば評価する (結果は使わない。`system.OnEventUnknown` は評価しない)。
 
 要求の値は次の表のとおり、`system.` で始まる小文字のエントリに格納する。通常の動作のように、全部のヘッダを `System.Request.*` に格納することはしない。`System.Callback.*` も、7 互換モードでは使わない。要求の値は、文字列としてそのまま格納し、`${` や `$(` は展開しない。
 
@@ -192,7 +206,7 @@ SHIORI/3.0 の要求 (`GET SHIORI/3.0` と `ID` ヘッダを持つもの) には
 1. `save` と `savecrypt` は UTF-8 (BOM あり) で書く。7.5.0 が書いた Shift_JIS のセーブは、そのまま読める。
 1. `GET Status` の単語数とエントリ数は、内部での単語の持ち方が違うため、7.5.0 と同じ数にならない。
 1. 辞書の単語の中の `$[` は式として読む (「9 の文法を取り込む範囲」を参照)。
-1. SHIORI/3.0 の `NOTIFY` は、7.5.0 と同じく型が `NOTIFY` なので、2.x の `NOTIFY` として受け付ける。`ID` ヘッダは使わない。
+1. `GET Version` に `SHIORI/3.0` で答え、SHIORI/3.0 の要求 (`GET` / `NOTIFY` の `ID` ヘッダ) を受け付けて、`SHIORI/3.0` で答える (「SHIORI」を参照)。7.5.0 は `GET` に `400 Bad Request` を返し、`NOTIFY` は 2.x の `NOTIFY` として `Ghost` ヘッダだけを見た。
 1. `expr` と `test` の文字列の大小は UTF-16 の並び順で比べる (7.5.0 は Shift_JIS のコードの並び順)。`expr` の `length` `substr` `index` は UTF-16 の 1 要素を 1 文字として数える。ASCII だけなら 7.5.0 と同じである。
 1. `Sender` ヘッダの接尾辞は付いているときだけ取り除く。
 1. `debug : log` の記録の書式は通常の動作のもので、7.5.0 の `kawari.log` とは違う。
