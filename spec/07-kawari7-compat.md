@@ -157,7 +157,7 @@ SHIORI/3.0 の要求 (`GET SHIORI/3.0` / `NOTIFY SHIORI/3.0` と `ID` ヘッダ�
 | 大文字を含むその他のもの (`OnBoot` `ShioriEcho` `KawariCommand` など) | `GET Sentence` (`Event` あり)。`ID` を `Event` とする |
 | 全部小文字のもの (`homeurl` `sakura.recommendsites` など) | `GET String`。`resource.ID` を評価する。空のときは、`version` `craftman` `craftmanw` `shioriid` `name` に限り、華和梨が答える |
 
-3.0 のイベントの `Reference` は、8 個より多くても `system.Reference0`〜 に全部入れる (2.x は 0〜7 だけである)。
+3.0 のイベントの `Reference` は、8 個より多くても `system.Reference0`〜 に全部入れる (2.x は 0〜7 だけである)。resource (`GET String` に読み替えるもの。`inputbox.autocomplete` など) も、`resource.ID` を評価する前に `Reference` を `system.Reference0`〜 に入れる。要求に無い番号は空にする。
 
 3.0 の `NOTIFY` は `204` を返す。`ID` が `ownerghostname` なら `Reference0` を `system.Ghost` に入れて `system.OnNotifyGhost` を、`otherghostname` なら各 `Reference` (`ゴースト名\1サーフェス\1サーフェス` の形) を `system.OtherGhost` と `system.OtherGhostEx` に入れて `system.OnNotifyOther` を評価する (2.x の `NOTIFY OwnerGhostName` / `NOTIFY OtherGhostName` と同じ)。`hwnd` なら `Reference0` を本体のウィンドウとして覚える。どの `ID` でも、`Reference` を `system.Reference0`〜 に、`ID` を `system.EventName` に入れて、`event.ID` があれば評価する (結果は使わない。`system.OnEventUnknown` は評価しない)。
 

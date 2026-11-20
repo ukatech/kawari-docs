@@ -2,6 +2,11 @@
 
 各版の変更点です。原文は英語のまま載せています。
 
+## Phase 9.3.3 (Core 4.3.3) (2026/11/21)
+
+- in the Kawari 7 compatible mode, the `Reference` headers of a SHIORI/3.0 resource request (an `ID` of all lower case letters, such as `inputbox.autocomplete`) are now stored in `system.Reference0` and so on before `resource.<ID>` is evaluated. They were not stored, so `${system.Reference0}` and the others still held the values of the last event (`OnKeyPress` and so on): `resource.inputbox.autocomplete : ${system.Reference0}$(chr 1)${system.Reference1}` answered the key code and the key name of the event before it, not the name and the title of the input box. A `Reference` that the request does not have is empty. A SHIORI/2.x `GET String` has no `Reference`, and is handled as before. See [Kawari 7 compatible mode](../spec/07-kawari7-compat.md)
+  - tested with the `shiori7` suite (a resource request after an event that sets `Reference0` to `Reference2`)
+
 ## Phase 9.3.2 (Core 4.3.2) (2026/11/17)
 
 - the integers of an expression `$[ ]` are 64 bit (-9223372036854775808 to 9223372036854775807) instead of 32 bit. The seconds of `date %s` after 2038 can be calculated now (`$[ $(date %s) - ${1stTime} ]`). `+` `-` `*` `**` and the unary `-` wrap at 64 bit when they go over the range (they wrapped at 32 bit before); a number that is over the range in a string is limited to the largest / smallest value; the smallest value divided by `-1` (`/` `%`) no longer faults. See [Expressions](../grammar/05-expressions.md)
