@@ -26,7 +26,7 @@
 | `saori` | DLL , 別名 [, オプション] | SAORI を登録する。オプションは `preload` / `loadoncall` (既定) / `noresident` |
 | `randomseed` | 数 | 乱数の種を決める |
 | `security` | 0〜3 | セキュリティレベル (既定は 2。「セキュリティ」の節を参照) |
-| `locale` | 文字コード名 | 辞書の文字コードを指定する。Shift_JIS・UTF-8・EUC-JP・ISO-2022-JP・EUC-KR・GB2312 を扱える |
+| `locale` | 文字コード名 | 辞書の文字コードを指定する。Shift_JIS・UTF-8・EUC-JP・ISO-2022-JP・EUC-KR・GB2312・Big5・ISO-8859-1 を扱える。名前の書き方 (別名、大文字小文字、`-` `_` `.` と空白の無視) は [textload_charset](../kis/textload_charset.md) と同じ。暗号化行の復号結果も、この文字コードで読む |
 | `debug` | `log` または `debugger` | `log` は `kawari.log` に、エラー・警告と、`OnMouseMove` 以外の要求と応答を記録する。`debugger` はデバッグ用のイベント `ShioriEcho` と `KawariCommand` を有効にする |
 
 `kawari.ini` と辞書を読み終えたあと、`system.OnLoad` を評価する。`security` が 3 未満のときは、`resource.homeurl` を書き込み禁止にする。
@@ -145,6 +145,8 @@
 
 7 互換モードは SHIORI/3.0 で動き、SHIORI/2.x の要求も受け付ける。本体は `GET Version` への応答の先頭行のバージョンで 2.x か 3.0 かを決めるので、`GET Version SHIORI/2.6` には `SHIORI/3.0 200 OK` を返して、本体に 3.0 を選ばせる (7.5.0 は `SHIORI/2.6 200 OK` を返した)。2.x のほかの要求への応答の先頭行は `SHIORI/2.6` で始める。
 
+要求は、`Charset` ヘッダの文字コードで読み、応答も同じ文字コードで返す。扱えるのは Shift_JIS・UTF-8・EUC-JP・ISO-2022-JP・EUC-KR・GB2312・Big5・ISO-8859-1 で、名前の書き方は [textload_charset](../kis/textload_charset.md) と同じである。`Charset` が無いときと、知らない名前のときは Shift_JIS とする。辞書の `locale` とは関係が無い (`locale` は辞書の読み込みだけに使う)。
+
 SHIORI/3.0 の要求 (`GET SHIORI/3.0` / `NOTIFY SHIORI/3.0` と `ID` ヘッダを持つもの) は、次の表のとおり 2.x の要求に読み替えて、下の表と同じ動作で処理する。応答の先頭行は `SHIORI/3.0` で、文の本体は `Value` ヘッダに入れる。`GET` の `ID` に半角の大文字 (A-Z) が 1 つでもあればイベント、全部小文字 (数字・記号は問わない) ならリソースである。7.5.0 は 3.0 の要求に `SHIORI/2.6 400 Bad Request` を返したので、これは 7.5.0 との違いである。
 
 | 3.0 の `GET` の `ID` | 読み替え先 |
@@ -210,12 +212,11 @@ SHIORI/3.0 の要求 (`GET SHIORI/3.0` / `NOTIFY SHIORI/3.0` と `ID` ヘッダ�
 1. `expr` と `test` の文字列の大小は UTF-16 の並び順で比べる (7.5.0 は Shift_JIS のコードの並び順)。`expr` の `length` `substr` `index` は UTF-16 の 1 要素を 1 文字として数える。ASCII だけなら 7.5.0 と同じである。
 1. `Sender` ヘッダの接尾辞は付いているときだけ取り除く。
 1. `debug : log` の記録の書式は通常の動作のもので、7.5.0 の `kawari.log` とは違う。
-1. SAORI を呼ぶときは、通常の動作の SAORI の仕組みを使う。`GET Version` を UTF-8 で問い合わせ、応答の `Charset` に従う。`Charset` の無い SAORI には以後 Shift_JIS で送る。
+1. SAORI を呼ぶときは、通常の動作の SAORI の仕組みを使う。`GET Version` を UTF-8 で問い合わせ、応答の `Charset` に従う (上の SHIORI と同じ文字コードを扱える)。`Charset` の無い SAORI には以後 Shift_JIS で送る。
 1. `kosui --check` の静的検査 (`K-W2001` など) は 7 の単語を調べない。
 1. `expr` の `+` `-` `*` `/` `%` と比較、`test` の `-eq` `-ne` `-lt` `-gt` `-le` `-ge` は、整数を 64bit で扱う (7.5.0 は 32bit だった)。32bit の範囲に収まる値の結果は 7.5.0 と同じである。範囲を超える値は、7.5.0 では 32bit で回り込んでいたが、64bit で回り込む (`expr 2147483647 + 1` は 7.5.0 では `-2147483648`、7 互換モードでは `2147483648`)。
 
 ## 実装していないもの
 
-- `locale` の `Big5` と `ISO-8859-1` は扱えない。これらを指定したときは、`locale` の指定が無いものとして、辞書の文字コードを自動判定する。
 - `include` の入れ子は 16 段までである。7.5.0 は互いに `include` すると終わらなかった。
 

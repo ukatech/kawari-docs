@@ -2,6 +2,13 @@
 
 各版の変更点です。原文は英語のまま載せています。
 
+## Phase 9.3.4 (Core 4.3.4) (2026/11/23)
+
+- the Kawari 7 compatible mode now reads `locale : Big5` and `locale : ISO-8859-1` (they were ignored, as if `locale` was not given, and the charset of the dictionaries was detected). The encrypted lines (`!KAWA0000` and so on) of a dictionary without a BOM, and the ones in a `=kis` zone, are read in the charset of `locale` as well (they were always read as Shift_JIS). See [Kawari 7 compatible mode](../spec/07-kawari7-compat.md)
+- `Big5` (CP950 on Windows) and `ISO-8859-1` can be given to [textload_charset](../kis/textload_charset.md), `textsave_charset` and `textappend_charset` (and so on to `locale`). ISO-8859-1 maps a byte to U+0000-U+00FF one to one (it is not CP1252) and is converted by Kawari itself, not by the OS; a character over U+00FF becomes `?` when written
+- the `Charset` header of SHIORI, SAORI and Direct SSTP accepts `EUC-JP`, `ISO-2022-JP`, `EUC-KR`, `GB2312`, `Big5` and `ISO-8859-1` as well as `Shift_JIS` and `UTF-8`. Before, any other name was treated as absent and the request was read and answered in Shift_JIS, so a ghost that made SSP send `Charset: EUC-JP` and so on got garbled text. A request is read in its `Charset` and answered in the same one; a SAORI answer without `Charset` is read as the charset it was sent in (automatic detection when it was sent in UTF-8). See [callsaori](../kis/callsaori.md)
+- the names of charsets are matched without regard to case and to `-` `_` `.` and spaces, and more aliases are accepted (`ShiftJIS` `euc_jp` `Latin1` `CP950` and so on; the same rule and aliases as yaya-shiori). The automatic detection of a dictionary (UTF-8 if it has a BOM or is valid UTF-8, otherwise Shift_JIS) is not changed
+
 ## Phase 9.3.3 (Core 4.3.3) (2026/11/21)
 
 - in the Kawari 7 compatible mode, the `Reference` headers of a SHIORI/3.0 resource request (an `ID` of all lower case letters, such as `inputbox.autocomplete`) are now stored in `system.Reference0` and so on before `resource.<ID>` is evaluated. They were not stored, so `${system.Reference0}` and the others still held the values of the last event (`OnKeyPress` and so on): `resource.inputbox.autocomplete : ${system.Reference0}$(chr 1)${system.Reference1}` answered the key code and the key name of the event before it, not the name and the title of the input box. A `Reference` that the request does not have is empty. A SHIORI/2.x `GET String` has no `Reference`, and is handled as before. See [Kawari 7 compatible mode](../spec/07-kawari7-compat.md)

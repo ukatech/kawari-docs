@@ -16,7 +16,7 @@ SAORIの戻り値(Result)
 
 戻り値が一つのSAORIを呼び出す。
 
-Phase 9.0.0以降、リクエストの文字コードはUTF-8から始める。ロード直後のGET Versionの応答にCharsetがあれば、以後その文字コードで送り、なければ以後`Shift_JIS`で送る(古いSAORI互換)。応答はそのCharsetに従って解釈し、Charsetがなければ、`Shift_JIS`で送った場合は`Shift_JIS`、そうでなければ自動判定する。応答に有効なCharsetがあれば、次回からその文字コードで送る。
+Phase 9.0.0以降、リクエストの文字コードはUTF-8から始める。ロード直後のGET Versionの応答にCharsetがあれば、以後その文字コードで送り、なければ以後`Shift_JIS`で送る(古いSAORI互換)。応答はそのCharsetに従って解釈し、Charsetがなければ、UTF-8で送った場合は自動判定、そうでなければ送ったのと同じ文字コードとして解釈する。応答に有効なCharsetがあれば、次回からその文字コードで送る。Charsetに書ける文字コードは、`Shift_JIS`と`UTF-8`のほかに、Phase 9.3.4以降は`EUC-JP` `ISO-2022-JP` `EUC-KR` `GB2312` `Big5` `ISO-8859-1`(名前の書き方は[`textload_charset`](textload_charset.md)と同じ)。それより前は`Shift_JIS`と`UTF-8`だけで、ほかの名前は無いものとして扱った。
 
 **SAORI over DirectSSTP** (Phase 9.0.0 β2以降、Windows (SSP 2.9.13以降)とninixのみ):本体に内蔵されたモジュール(`internal_crypto`、`internal_data`、`internal_random`など)を、DLLなしのSAORIとして呼べる。SAORI/1.0の要求をDLLではなく本体へDirect SSTPで送る。
 
